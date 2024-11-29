@@ -2,6 +2,8 @@
 .idea/
 *.sln.iml
 .Rider*
+*.cache
+*.xml
 
 # Build output
 bin/
@@ -37,6 +39,10 @@ node_modules/
 wwwroot/
 wwwroot/css/
 wwwroot/js/
+*.AssemblyInfo.cs
+*.restore.info
+bin/
+obj/
 
 # Temporary files
 *.tmp
