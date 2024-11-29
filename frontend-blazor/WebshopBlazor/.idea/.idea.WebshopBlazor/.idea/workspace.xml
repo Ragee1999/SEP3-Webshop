@@ -7,8 +7,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b65d369c-9bf8-4e84-aff8-0901d7bd694a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/SEP3-Webshop.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../backend-java/webshop/src/main/java/sep3/webshop/config/CorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.idea.frontend-blazor.dir/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.idea.frontend-blazor.dir/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.idea.frontend-blazor.dir/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/App.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Layout/MainLayout.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Layout/MainLayout.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Layout/NavMenu.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Layout/NavMenu.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Pages/Counter.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Pages/Home.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Pages/TestApi.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Pages/Weather.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/Properties/launchSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/WebshopBlazor.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/_Imports.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.GlobalUsings.g.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/WebshopBlazor.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/WebshopBlazor.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/WebshopBlazor.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/css/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/css/bootstrap/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/css/bootstrap/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/favicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/icon-192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebshopBlazor/wwwroot/sample-data/weather.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend-java/webshop/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend-java/webshop/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend-java/webshop/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend-java/webshop/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,9 +72,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2pWOPErae5KtXJwyQlTHuKYsQIG" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -30,9 +88,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Ragee",
+    "git-widget-placeholder": "Merging main",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\Rageevan\\AppData\\Local\\Symbols\\src"
+    ]
   }
 }]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebshopBlazor: IIS Express">
@@ -91,12 +156,14 @@
       <option name="presentableId" value="Default" />
       <updated>1732878339219</updated>
       <workItem from="1732878342249" duration="19000" />
+      <workItem from="1732879315272" duration="16000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
