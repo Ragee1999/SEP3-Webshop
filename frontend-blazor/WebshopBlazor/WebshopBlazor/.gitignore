@@ -1,12 +1,11 @@
-﻿# Rider IDE files
+﻿# --- Rider/JetBrains IDE Files ---
 .idea/
 *.sln.iml
 .Rider*
 *.cache
 *.xml
-*.iml
 
-# Build output
+# --- Build Output ---
 bin/
 obj/
 .vs/
@@ -14,41 +13,43 @@ obj/
 *.suo
 *.log
 
-# Package files
+# --- Package Files ---
 *.nupkg
 *.snupkg
 packages/
 project.lock.json
 project.fragment.lock.json
 
-# Dependency directories
+# --- Dependency Directories ---
 node_modules/
 
-# User-specific files
+# --- User-Specific Files ---
 *.rsuser
 *.userosscache
 *.sln.docstates
 .vscode/
 
-# Runtime directories
+# --- Runtime Directories ---
 **/wwwroot/
 **/dist/
 **/published/
 
-# Blazor-specific files
+# --- Blazor/ASP.NET Core Specific ---
 wwwroot/
 wwwroot/css/
 wwwroot/js/
 *.AssemblyInfo.cs
-*.AssemblyInfoInputs.cache
 *.restore.info
 
-
-# Temporary files
+# --- Temporary Files ---
 *.tmp
 *.bak
 *.swp
 
+# --- Specific Files ---
+frontend-blazor/WebshopBlazor/.idea/.idea.WebshopBlazor/.idea/workspace.xml
+frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs
+frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache
 
 
 
