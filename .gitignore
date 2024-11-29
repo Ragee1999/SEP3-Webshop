@@ -1,4 +1,25 @@
 
-frontend-blazor/WebshopBlazor/.idea/.idea.WebshopBlazor/.idea/workspace.xml
-frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs
-frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache
+# --- Rider/IDE Files ---
+frontend-blazor/WebshopBlazor/.idea/               # JetBrains Rider IDE config files
+frontend-blazor/WebshopBlazor/*.sln.iml           # Rider project file
+frontend-blazor/WebshopBlazor/.Rider*
+
+# --- Build Output ---
+frontend-blazor/WebshopBlazor/bin/                # Build binaries
+frontend-blazor/WebshopBlazor/obj/                # Object files and intermediate build files
+
+# --- Temporary Files ---
+frontend-blazor/WebshopBlazor/*.cache             # Cache files
+frontend-blazor/WebshopBlazor/*.log               # Log files
+frontend-blazor/WebshopBlazor/*.restore.info      # Restore info
+
+# --- User-Specific Configurations ---
+frontend-blazor/WebshopBlazor/.idea/workspace.xml # Workspace-specific config files (per-user)
+frontend-blazor/WebshopBlazor/*.user              # User-specific settings
+frontend-blazor/WebshopBlazor/*.suo               # Solution options for Visual Studio
+frontend-blazor/WebshopBlazor/vs/                 # VSCode-related files
+
+# --- Blazor Files ---
+frontend-blazor/WebshopBlazor/wwwroot/            # Static Blazor content (optional)
+frontend-blazor/WebshopBlazor/obj/Debug/          # Debug binaries
+frontend-blazor/WebshopBlazor/obj/Release/        # Release binaries
