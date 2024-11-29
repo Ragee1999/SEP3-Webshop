@@ -9,11 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b65d369c-9bf8-4e84-aff8-0901d7bd694a" name="Changes" comment="" />
+    <list default="true" id="b65d369c-9bf8-4e84-aff8-0901d7bd694a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.gitignore.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -22,6 +30,14 @@
     <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebshopBlazor/wwwroot/css/bootstrap/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -116,6 +132,7 @@
       <workItem from="1732880353937" duration="10000" />
       <workItem from="1732880952556" duration="624000" />
       <workItem from="1732881656523" duration="167000" />
+      <workItem from="1732881848442" duration="1777000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
