@@ -1,0 +1,44 @@
+﻿# Rider IDE files
+.idea/
+*.sln.iml
+.Rider*
+
+# Build output
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+# Package files
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Dependency directories
+node_modules/
+
+# User-specific files
+*.rsuser
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# Runtime directories
+**/wwwroot/
+**/dist/
+**/published/
+
+# Blazor-specific files
+wwwroot/
+wwwroot/css/
+wwwroot/js/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
