@@ -50,9 +50,9 @@ frontend-blazor/WebshopBlazor/obj/                # Object files and intermediat
 frontend-blazor/WebshopBlazor/bin/                # Build binaries
 
 # --- User-Specific and IDE Configuration ---
-frontend-blazor/WebshopBlazor/.idea/              # JetBrains Rider IDE config files
-frontend-blazor/WebshopBlazor/*.sln.iml           # Rider project file
-frontend-blazor/WebshopBlazor/*.restore.info      # Restore info
+frontend-blazor/WebshopBlazor.idea/              # JetBrains Rider IDE config files
+frontend-blazor/WebshopBlazor*.sln.iml           # Rider project file
+frontend-blazor/WebshopBlazor*.restore.info      # Restore info
 frontend-blazor/WebshopBlazor/*.user              # User-specific settings
 frontend-blazor/WebshopBlazor/.idea/workspace.xml # Workspace-specific config files (per-user)
 
@@ -64,5 +64,5 @@ project.fragment.lock.json  # NuGet fragment lock file
 
 # --- Exclude Debugging/Testing Metadata ---
 *.AssemblyInfo.cs           # Assembly metadata
-frontend-blazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache # Debug metadata
-frontend-blazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs          # Debug metadata
+frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache # Debug metadata
+frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs          # Debug metadata
