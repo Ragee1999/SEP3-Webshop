@@ -7,7 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b65d369c-9bf8-4e84-aff8-0901d7bd694a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebshopBlazor/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
@@ -21,7 +20,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/obj/Debug/net8.0/WebshopBlazor.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -32,23 +30,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.WebshopBlazor: http.executor": "Run",
-    ".NET Launch Settings Profile.WebshopBlazor: https.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.WebshopBlazor: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.WebshopBlazor: https.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\Rageevan\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Rageevan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Rageevan\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebshopBlazor: http">
     <configuration name="WebshopBlazor: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebshopBlazor/WebshopBlazor.csproj" />
@@ -109,6 +107,7 @@
       <workItem from="1732879450780" duration="71000" />
       <workItem from="1732879948800" duration="54000" />
       <workItem from="1732880087394" duration="45000" />
+      <workItem from="1732880353937" duration="10000" />
     </task>
     <servers />
   </component>
