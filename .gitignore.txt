@@ -1,0 +1,64 @@
+# --- Rider/JetBrains IDE Files ---
+.idea/                       # Ignore JetBrains project settings
+*.sln.iml                    # Rider-specific solution files
+.Rider*                      # Rider-related metadata
+/vscode/                     # VSCode-specific files
+*.suo                        # Solution options for Visual Studio
+*.user                       # User-specific settings
+*.cache                      # Cache files
+*.log                        # Log files
+
+# --- Java/IntelliJ IDE Files ---
+*.class                      # Java class files
+*.jar                        # Java archive files
+*.war                        # Web archive files
+*.ear                        # Enterprise archive files
+*.iml                        # IntelliJ module files
+*.hprof                      # Heap dump files
+/out/                        # IntelliJ output directory
+/shelf/                      # IntelliJ shelf files
+/workspace.xml               # IntelliJ workspace settings
+/httpRequests/               # IntelliJ HTTP request files
+/dataSources/                # IntelliJ database connection settings
+/dataSources.local.xml       # Local database connection settings
+
+# --- Backend (Java/Spring Boot) ---
+/target/                     # Maven output directory
+*.log                        # Log files
+*.pid                        # PID files
+/hs_err_pid*.log             # Java crash logs
+/logs/                       # Application log directory
+.env                         # Environment configuration files
+*.class                      # Compiled Java files
+
+# --- Frontend (Blazor/Web) ---
+bin/                         # Build output directory
+obj/                         # Object files directory
+.vs/                         # Visual Studio workspace files
+*.rsuser                     # Rider-specific cache files
+wwwroot/                     # Blazor static content
+wwwroot/css/                 # CSS in Blazor
+wwwroot/js/                  # JavaScript in Blazor
+**/dist/                     # Distribution files
+**/published/                # Published build output
+node_modules/                # Node.js dependencies
+*.tmp                        # Temporary files
+*.bak                        # Backup files
+*.swp                        # Swap files (e.g., from Vim)
+
+# --- Blazor/ASP.NET Core Specific ---
+project.lock.json            # NuGet project lock file
+project.fragment.lock.json   # NuGet fragment lock file
+*.nupkg                      # NuGet package files
+*.snupkg                     # NuGet symbol package files
+*.restore.info               # Rider project restore info
+
+# --- General ---
+*.DS_Store                   # macOS metadata
+Thumbs.db                    # Windows thumbnail cache
+*.log                        # Log files
+*.tmp                        # Temporary files
+*.bak                        # Backup files
+*.swp                        # Swap files (e.g., from Vim)
+*~                           # Editor temporary files
+
