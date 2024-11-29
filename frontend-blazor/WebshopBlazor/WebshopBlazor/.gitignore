@@ -4,6 +4,7 @@
 .Rider*
 *.cache
 *.xml
+*.iml
 
 # Build output
 bin/
@@ -11,7 +12,6 @@ obj/
 .vs/
 *.user
 *.suo
-*.cache
 *.log
 
 # Package files
@@ -40,13 +40,15 @@ wwwroot/
 wwwroot/css/
 wwwroot/js/
 *.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
 *.restore.info
-bin/
-obj/
+
 
 # Temporary files
 *.tmp
 *.bak
 *.swp
 
-*.restore.info
+
+
+
