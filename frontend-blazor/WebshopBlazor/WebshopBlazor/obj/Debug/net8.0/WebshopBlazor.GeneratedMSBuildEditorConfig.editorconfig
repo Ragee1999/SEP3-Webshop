@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/Pages/TestApi.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzdEFwaS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Rageevan/Desktop/SEP3-Webshop/frontend-blazor/WebshopBlazor/WebshopBlazor/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
