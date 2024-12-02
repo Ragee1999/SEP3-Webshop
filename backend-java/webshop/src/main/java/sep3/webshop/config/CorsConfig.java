@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("http://localhost:5203") // Add Blazor's frontend URL
+                        .allowedOrigins("http://localhost:5203") // Add our Blazor's frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true);
