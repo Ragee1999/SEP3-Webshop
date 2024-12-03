@@ -1,0 +1,70 @@
+@page "/products"
+
+
+<PageTitle>Our Products</PageTitle>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Featured Products</h2>
+
+    <!-- Product Type Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <h5 class="text-primary">Product Types</h5>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">Product Type 1</a>
+                <a href="#" class="list-group-item list-group-item-action">Product Type 2</a>
+                <a href="#" class="list-group-item list-group-item-action">Product Type 3</a>
+                <a href="#" class="list-group-item list-group-item-action">Product Type 4</a>
+                <a href="#" class="list-group-item list-group-item-action">Product Type 5</a>
+                <a href="#" class="list-group-item list-group-item-action">Product Type 6</a>
+
+
+            </div>
+        </div>
+
+        <!-- Products Display Section -->
+        <div class="col-md-8">
+            <div class="row">
+                @foreach (var product in products)
+                {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-primary">
+                        <img src="@product.ImageUrl" class="card-img-top" alt="Product Image" />
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">@product.Name</h5>
+                            <p class="card-text text-muted">@product.Description</p>
+                            <h6 class="text-success">$@product.Price</h6>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+// list of products 
+private List<Product> products = new List<Product>
+{
+new Product { Name = "Product 1", Description = "Description of Product 1", Price = 29.99, ImageUrl = "" },
+new Product { Name = "Product 2", Description = "Description of Product 2", Price = 19.99, ImageUrl = "" },
+new Product { Name = "Product 3", Description = "Description of Product 3", Price = 49.99, ImageUrl = "" },
+new Product { Name = "Product 4", Description = "Description of Product 4", Price = 39.99, ImageUrl = "" },
+new Product { Name = "Product 5", Description = "Description of Product 5", Price = 11.99, ImageUrl = "" },
+new Product { Name = "Product 6", Description = "Description of Product 6", Price = 1.99, ImageUrl = "" },
+
+
+};
+
+public class Product
+{
+public string Name { get; set; }
+public string Description { get; set; }
+public double Price { get; set; }
+public string ImageUrl { get; set; }
+}
+}

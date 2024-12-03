@@ -1,0 +1,47 @@
+@page "/contact"
+@using Microsoft.AspNetCore.Components.Forms
+@using WebshopBlazor.Models
+
+<PageTitle>Contact Us</PageTitle>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Contact Us</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <EditForm Model="@contactForm" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <InputText id="name" class="form-control" @bind-Value="contactForm.Name" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <InputText id="email" class="form-control" @bind-Value="contactForm.Email" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your Message</label>
+                    <InputTextArea id="message" class="form-control" @bind-Value="contactForm.Message" rows="4" required />
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ContactFormModel contactForm = new ContactFormModel();
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine($"Message from {contactForm.Name} ({contactForm.Email}): {contactForm.Message}");
+    }
+
+}
