@@ -30,14 +30,11 @@ node_modules/
 .vscode/
 
 # --- Runtime Directories ---
-**/wwwroot/
 **/dist/
 **/published/
 
 # --- Blazor/ASP.NET Core Specific ---
-wwwroot/
-wwwroot/css/
-wwwroot/js/
+
 *.AssemblyInfo.cs
 *.restore.info
 
