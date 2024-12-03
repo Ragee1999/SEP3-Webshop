@@ -30,7 +30,6 @@ node_modules/
 .vscode/
 
 # --- Runtime Directories ---
-**/wwwroot/
 **/dist/
 **/published/
 
