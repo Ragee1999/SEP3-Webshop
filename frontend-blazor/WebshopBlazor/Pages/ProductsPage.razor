@@ -29,10 +29,9 @@
                 {
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 border-primary">
-                        <img src="@product.ImageUrl" class="card-img-top" alt="Product Image" />
+                        <img src="@product.Image" class="card-img-top" alt="Product Image" />
                         <div class="card-body">
                             <h5 class="card-title text-dark">@product.Name</h5>
-                            <p class="card-text text-muted">@product.Description</p>
                             <h6 class="text-success">$@product.Price</h6>
                         </div>
                         <div class="card-footer text-center">
@@ -47,24 +46,27 @@
 </div>
 
 @code {
-// list of products 
-private List<Product> products = new List<Product>
-{
-new Product { Name = "Product 1", Description = "Description of Product 1", Price = 29.99, ImageUrl = "" },
-new Product { Name = "Product 2", Description = "Description of Product 2", Price = 19.99, ImageUrl = "" },
-new Product { Name = "Product 3", Description = "Description of Product 3", Price = 49.99, ImageUrl = "" },
-new Product { Name = "Product 4", Description = "Description of Product 4", Price = 39.99, ImageUrl = "" },
-new Product { Name = "Product 5", Description = "Description of Product 5", Price = 11.99, ImageUrl = "" },
-new Product { Name = "Product 6", Description = "Description of Product 6", Price = 1.99, ImageUrl = "" },
+    private List<Product> products = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+            products = await http.GetFromJsonAsync<List<Product>>("/products");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching products: {ex.Message}");
+        }
+    }
 
-};
-
-public class Product
-{
-public string Name { get; set; }
-public string Description { get; set; }
-public double Price { get; set; }
-public string ImageUrl { get; set; }
-}
+    public class Product
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public int Stock_Quantity { get; set; }
+        public string Image { get; set; }
+    }
 }
