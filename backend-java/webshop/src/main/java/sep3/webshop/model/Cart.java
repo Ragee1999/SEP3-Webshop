@@ -2,6 +2,7 @@ package sep3.webshop.model;
 
 import jakarta.persistence.*;
 
+@Entity
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
