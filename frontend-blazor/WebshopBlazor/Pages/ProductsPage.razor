@@ -8,7 +8,7 @@
 
     <!-- Product Type Filter Section -->
     <div class="row mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h5 class="text-primary">Product Types</h5>
             <div class="list-group bg-light">
                 <a href="#" class="list-group-item list-group-item-action">Product Type 1</a>
@@ -23,13 +23,13 @@
         </div>
 
         <!-- Products Display Section -->
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="row">
                 @foreach (var product in products)
                 {
                 <div class="col-md-4 mb-4">
                     <div class="card bg-secondary h-100 bg-light">
-                        <div class="rounded-top rounded-bottom border-bottom border-dark border-1" style="height: 200px;" onclick="window.location.href='#';">
+                        <div class="rounded-top rounded-bottom border-bottom border-dark border-1" style="height: 200px;" onclick="window.location.href='/SpecificProduct/{@product.Id}';">
                             <img src="@product.Image" class="card-img-top" alt="Product Image"/>
                         </div>
                         
