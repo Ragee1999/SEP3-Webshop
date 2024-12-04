@@ -10,7 +10,7 @@
     <div class="row mb-4">
         <div class="col-md-4">
             <h5 class="text-primary">Product Types</h5>
-            <div class="list-group">
+            <div class="list-group bg-light">
                 <a href="#" class="list-group-item list-group-item-action">Product Type 1</a>
                 <a href="#" class="list-group-item list-group-item-action">Product Type 2</a>
                 <a href="#" class="list-group-item list-group-item-action">Product Type 3</a>
@@ -28,9 +28,12 @@
                 @foreach (var product in products)
                 {
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100 border-primary">
-                        <img src="@product.Image" class="card-img-top" alt="Product Image" />
-                        <div class="card-body">
+                    <div class="card bg-secondary h-100 bg-light">
+                        <div class="rounded-top rounded-bottom border-bottom border-dark border-1" style="height: 200px;" onclick="window.location.href='#';">
+                            <img src="@product.Image" class="card-img-top" alt="Product Image"/>
+                        </div>
+                        
+                        <div class="card-body d-flex justify-content-between align-items-center rounded-bottom">
                             <h5 class="card-title text-dark">@product.Name</h5>
                             <h6 class="text-success">$@product.Price</h6>
                         </div>
