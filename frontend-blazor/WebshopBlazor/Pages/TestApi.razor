@@ -17,6 +17,9 @@
             <td>@product.Name</td>
             <td>$@product.Price</td>
             <td>@product.Stock_Quantity</td>
+            <td>
+                <button class="btn btn-primary" @onclick="() => AddToCart(product.Id, 1)">Add to Cart</button>
+            </td>
         </tr>
     }
     </tbody>
@@ -35,6 +38,19 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error fetching products: {ex.Message}");
+        }
+    }
+    private async Task AddToCart(long productId, int quantity)
+    {
+        try
+        {
+            var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+            var queryParams = $"?productId={productId}&quantity={quantity}";
+            await http.PostAsync($"/api/cart{queryParams}", null);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding to cart: {ex.Message}");
         }
     }
 
