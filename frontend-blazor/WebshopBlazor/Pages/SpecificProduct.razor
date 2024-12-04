@@ -1,5 +1,43 @@
-﻿@page "/SpecificProduct/{id:int}"
+﻿@page "/SpecificProduct"
 @using WebshopBlazor.Models
+
+<div class="container my-5">
+    
+    <!-- left section (images) -->
+    <div class="col-6">
+        
+        <!-- head image -->
+        <div class="border-1 border-dark border rounded">
+            <img src="product.img" class="img-fluid h-auto my-3" style="min-height: 300px" alt="Head image of product"/>
+        </div>
+        
+        <!-- alt images -->
+        <div class="row my-3">
+            <div class="col-2 offset my-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            </div>
+            <div class="col-2 my-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            </div>
+            <div class="col-2 my-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            </div>
+            <div class="col-2 my-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            </div>
+            <div class="col-2 my-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            </div> 
+        </div>
+        
+    </div>
+    
+    <!-- right section (information) -->
+    <div class="col-6">
+        
+    </div>
+    
+</div>
 
 @code
 {
