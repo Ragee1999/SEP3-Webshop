@@ -1,10 +1,10 @@
 ﻿@page "/SpecificProduct"
 @using WebshopBlazor.Models
 
-<div class="container my-5">
+<div class="row container-fluid my-5">
     
     <!-- left section (images) -->
-    <div class="col-6">
+    <div class="col-6 p-5">
         
         <!-- head image -->
         <div class="border-1 border-dark border rounded">
@@ -12,28 +12,50 @@
         </div>
         
         <!-- alt images -->
-        <div class="row my-3">
-            <div class="col-2 offset my-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+        <div class="my-3 mx-1 d-flex flex-row justify-content-around">
+            <div class="col-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
             </div>
-            <div class="col-2 my-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            <div class="col-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
             </div>
-            <div class="col-2 my-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            <div class="col-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
             </div>
-            <div class="col-2 my-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
+            <div class="col-2 border-1 border-dark border rounded">
+                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
             </div>
-            <div class="col-2 my-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto p-3" style="min-height: 80px" alt="Alt img of product"/>
-            </div> 
         </div>
         
     </div>
     
     <!-- right section (information) -->
-    <div class="col-6">
+    <div class="col-6 p-5">
+
+        <!-- product name section-->
+        <div class="my-3">
+            <h1>Product Name</h1>
+        </div>
+
+        <!-- product price section-->
+        <div class="my-3">
+            <h3>Price</h3>
+        </div>
+
+        <!-- product add to cart section-->
+        <div class="my-3">
+            <a href="#" class="btn btn-primary text-center">Add to Cart</a>
+        </div>
+        
+        <!-- product description section-->
+        <div class="my-3">
+            <p>
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            </p>
+        </div>
         
     </div>
     
