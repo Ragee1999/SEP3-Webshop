@@ -1,0 +1,80 @@
+@page "/admin"
+
+<h3>Admin Login</h3>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<div class="form-container">
+    <form @onsubmit="HandleLogin">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" class="form-control" @bind="username" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" @bind="password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="captcha">CAPTCHA: @captchaValue</label>
+            <input id="captcha" class="form-control" @bind="captchaInput" placeholder="Enter the CAPTCHA value" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+@code {
+    private string username;
+    private string password;
+    private string captchaInput;
+    private string captchaValue;
+    private string errorMessage;
+
+    protected override void OnInitialized()
+    {
+        GenerateCaptcha();
+    }
+
+    private void GenerateCaptcha()
+    {
+        Random rand = new Random();
+        int num1 = rand.Next(1, 10);
+        int num2 = rand.Next(1, 10);
+        captchaValue = $"{num1} + {num2} = ?";
+        captchaResult = num1 + num2;
+    }
+
+    private int captchaResult;
+
+    private async Task HandleLogin()
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "Please enter both username and password.";
+            return;
+        }
+
+        if (int.TryParse(captchaInput, out int captchaInputValue) && captchaInputValue != captchaResult)
+        {
+            errorMessage = "CAPTCHA is incorrect. Please try again.";
+            GenerateCaptcha();
+            return;
+        }
+
+// 
+        if (username == "admin" && password == "admin123")
+        {
+            errorMessage = null;
+// 
+        }
+        else
+        {
+            errorMessage = "Invalid username or password.";
+        }
+    }
+}
