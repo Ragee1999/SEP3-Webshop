@@ -7,7 +7,7 @@
         
         <!-- head image -->
         <div class="border-1 border-dark border rounded">
-            <img src="product.img" class="img-fluid h-auto my-3" style="min-height: 300px" alt="Head image of product"/>
+            <img src="@product.Image" class="img-fluid h-auto my-3" style="min-height: 300px" alt="Head image of product"/>
         </div>
         
         <!-- alt images -->
@@ -33,26 +33,25 @@
 
         <!-- product name section-->
         <div class="my-3">
-            <h1>Product Name</h1>
+            <h1>@product.Name</h1>
         </div>
 
         <!-- product price section-->
         <div class="my-3">
-            <h3>Price</h3>
+            <h3>$@product.Price</h3>
         </div>
 
         <!-- product add to cart section-->
         <div class="my-3">
-            <a href="#" class="btn btn-primary text-center">Add to Cart</a>
+            <button class="btn btn-primary" @onclick:stopPropagation="true" @onclick="() => AddToCart(product.Id)">
+                Add to Cart
+            </button>
         </div>
         
         <!-- product description section-->
         <div class="my-3">
             <p>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                @product.Description
             </p>
         </div>
         
@@ -80,6 +79,31 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading product: {ex.Message}");
+        }
+    }
+    
+    private async Task AddToCart(long productId)
+    {
+        Console.WriteLine($"Attempting to add product with ID {productId} to cart.");
+        try
+        {
+            var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+
+            // Send productId as a query parameter
+            var response = await http.PostAsync($"/cart?productId={productId}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Product {productId} successfully added to cart.");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to add product {productId} to cart: {response.ReasonPhrase}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding product to cart: {ex.Message}");
         }
     }
 
