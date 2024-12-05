@@ -4,19 +4,23 @@ import jakarta.persistence.*;
 
 @Entity
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product; // Refererer til produktet
+    @JoinColumn(name = "productId", nullable = false)
+    private Product product;
 
-    private String image;
+    @Column(nullable = false)
     private String name;
-    private double price;
-    private int quantity;
 
+    @Column(nullable = false)
+    private double price;
+
+    @Column(nullable = false)
+    private int quantity;
 
     // Getters and Setters
     public Long getId() {
@@ -33,14 +37,6 @@ public class Cart {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getName() {

@@ -1,6 +1,5 @@
-﻿@page "/SpecificProduct"
+﻿@page "/SpecificProduct/{Id:int}"
 @using WebshopBlazor.Models
-
 <div class="row container-fluid my-5">
     
     <!-- left section (images) -->
@@ -61,7 +60,36 @@
     
 </div>
 
-@code
-{
-    
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Product product = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProduct();
+    }
+
+    private async Task LoadProduct()
+    {
+        try
+        {
+            var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+            product = await http.GetFromJsonAsync<Product>($"/products/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading product: {ex.Message}");
+        }
+    }
+
+    public class Product
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+        public double Price { get; set; }
+        public int StockQuantity { get; set; }
+        public string Description { get; set; }
+    }
 }

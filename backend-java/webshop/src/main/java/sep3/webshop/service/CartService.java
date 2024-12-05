@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CartService {
     List<Cart> getAllCartItems();
-    Cart addToCart(Long productId, int quantity);
+    Cart addToCart(Long productId);
     void removeFromCart(Long cartId);
     double getTotalPrice();
     void clearCart();

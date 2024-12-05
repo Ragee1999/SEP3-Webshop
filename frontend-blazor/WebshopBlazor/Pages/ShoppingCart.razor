@@ -12,16 +12,25 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in cartItems)
+    @if (cartItems != null && cartItems.Count > 0)
+    {
+        foreach (var item in cartItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>$@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>$@(item.Price * item.Quantity)</td>
+                <td>
+                    <button class="btn btn-danger" @onclick="() => RemoveFromCart(item.Id)">Remove</button>
+                </td>
+            </tr>
+        }
+    }
+    else
     {
         <tr>
-            <td>@item.Name</td>
-            <td>$@item.Price</td>
-            <td>@item.Quantity</td>
-            <td>$@(item.Price * item.Quantity)</td>
-            <td>
-                <button class="btn btn-danger" @onclick="() => RemoveFromCart(item.Id)">Remove</button>
-            </td>
+            <td colspan="5">No items in cart.</td>
         </tr>
     }
     </tbody>
@@ -45,7 +54,7 @@
         try
         {
             var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-            cartItems = await http.GetFromJsonAsync<List<CartItem>>("/api/cart");
+            cartItems = await http.GetFromJsonAsync<List<CartItem>>("/cart");
             totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
         }
         catch (Exception ex)
@@ -59,7 +68,7 @@
         try
         {
             var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-            await http.DeleteAsync($"/api/cart/{cartId}");
+            await http.DeleteAsync($"/cart/{cartId}");
             await LoadCart(); // Reload the cart
         }
         catch (Exception ex)
@@ -73,8 +82,9 @@
         try
         {
             var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-            await http.DeleteAsync("/api/cart/clear");
-            await LoadCart(); // Reload the cart
+            await http.DeleteAsync("/cart/clear");
+            cartItems.Clear(); // Clear cart in UI
+            totalPrice = 0;
         }
         catch (Exception ex)
         {
@@ -82,10 +92,12 @@
         }
     }
 
+
     public class CartItem
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public string Image { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
     }
