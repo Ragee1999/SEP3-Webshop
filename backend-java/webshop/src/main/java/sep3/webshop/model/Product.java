@@ -20,8 +20,13 @@ public class Product {
     @Column(nullable = false)
     private Integer stockQuantity;
 
-    // Getters and setters
+    @Column(nullable = false)
+    private String description;
 
+
+
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -61,4 +66,14 @@ public class Product {
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 }

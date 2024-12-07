@@ -21,11 +21,6 @@ public class Customer {
     @Column
     private String phoneNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
-
-
     // Getters and Setters
 
     public Long getId() {
@@ -66,13 +61,5 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 }

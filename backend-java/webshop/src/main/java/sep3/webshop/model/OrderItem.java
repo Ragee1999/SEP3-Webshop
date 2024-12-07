@@ -2,66 +2,39 @@ package sep3.webshop.model;
 
 import jakarta.persistence.*;
 
-
 @Entity
-@Table(name = "order_item")
-public class OrderItem {
+public class OrderItem
+{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id @ManyToOne @JoinColumn(name = "orderId", nullable = false) private CustomerOrder customerOrder;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false) // Refers to CustomerOrder
-    private CustomerOrder customerOrder;
+  @Id @ManyToOne @JoinColumn(name = "productId", nullable = false) private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+  @Column(nullable = false) private int quantity;
 
-    @Column(nullable = false)
-    private Integer quantity;
+  public CustomerOrder getCustomerOrder()
+  {
+    return customerOrder;
+  }
 
-    @Column(nullable = false)
-    private Double price; // Price at the time of purchase
+  public Product getProduct()
+  {
+    return product;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public int getQuantity()
+  {
+    return quantity;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void addQuantity(int quantity)
+  {
+    this.quantity += quantity;
+  }
 
-    public CustomerOrder getCustomerOrder() {
-        return customerOrder;
-    }
+  public void removeQuantity(int quantity)
+  {
+    this.quantity -= quantity;
+  }
 
-    public void setCustomerOrder(CustomerOrder customerOrder) {
-        this.customerOrder = customerOrder;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 }
