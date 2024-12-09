@@ -1,0 +1,199 @@
+@page "/admin/products"
+
+<h3>Produkter</h3>
+
+<!-- Tilføj produkt form -->
+<h4>Tilføj Produkt</h4>
+<div class="add-product-form">
+    <label>Navn:</label>
+    <input type="text" @bind="newProduct.Name" />
+
+    <label>Beskrivelse:</label>
+    <textarea @bind="newProduct.Description"></textarea>
+
+    <label>Pris:</label>
+    <input type="number" step="0.01" @bind="newProduct.Price" />
+
+    <label>Antal:</label>
+    <input type="number" @bind="newProduct.Quantity" />
+
+    <label>Billeder:</label>
+    @foreach (var image in newProduct.Images)
+    {
+        <div>
+            <input type="text" placeholder="Billede URL" bind="@image" />
+        </div>
+    }
+    <button @onclick="AddImageField">Tilføj Billede</button>
+
+    <button @onclick="AddProduct">Tilføj Produkt</button>
+</div>
+
+<hr />
+
+<!-- Liste af produkter -->
+<h4>Eksisterende Produkter</h4>
+<div class="product-list">
+    @foreach (var product in products)
+    {
+        <div class="product-item">
+            <button class="product-header" @onclick="() => ToggleProductDetails(product.Id)">
+                @product.Name (ID: @product.Id)
+            </button>
+            @if (product.IsExpanded)
+            {
+                <div class="product-details">
+                    <p><strong>Beskrivelse:</strong> @product.Description</p>
+                    <p><strong>Pris:</strong> @product.Price.ToString("C")</p>
+                    <p><strong>Antal:</strong> @product.Quantity</p>
+                    <p><strong>Status:</strong> @(product.IsActive ? "Aktiv" : "Inaktiv")</p>
+                    <h5>Billeder:</h5>
+                    <ul>
+                        @foreach (var image in product.Images)
+                        {
+                            <li>@image</li>
+                        }
+                    </ul>
+
+                    <!-- Redigering af produkt -->
+                    <h5>Rediger Produkt</h5>
+                    <label>Beskrivelse:</label>
+                    <textarea @bind="product.Description"></textarea>
+
+                    <label>Pris:</label>
+                    <input type="number" step="0.01" @bind="product.Price" />
+
+                    <label>Antal:</label>
+                    <input type="number" @bind="product.Quantity" />
+
+                    <button @onclick="() => ToggleProductStatus(product)">Skift Status</button>
+                    <button @onclick="() => UpdateProduct(product)">Opdater Produkt</button>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .add-product-form, .product-details {
+        margin-bottom: 20px;
+    }
+
+    .product-list {
+        margin-top: 20px;
+    }
+
+    .product-header {
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        cursor: pointer;
+    }
+
+    .product-details {
+        padding: 10px;
+        border-left: 2px solid #007bff;
+        background-color: #fefefe;
+    }
+
+    textarea, input {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+</style>
+
+@code {
+    private List<Product> products = new List<Product>();
+    private Product newProduct = new Product
+    {
+        Images = new List<string> { "" }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Mock data - Hent rigtige data fra database eller API
+        products = new List<Product>
+        {
+            new Product
+            {
+                Id = 1,
+                Name = "Produkt 1",
+                Description = "Beskrivelse for produkt 1",
+                Price = 199.99m,
+                Quantity = 10,
+                Images = new List<string> { "https://example.com/image1.jpg" },
+                IsActive = true
+            },
+            new Product
+            {
+                Id = 2,
+                Name = "Produkt 2",
+                Description = "Beskrivelse for produkt 2",
+                Price = 299.99m,
+                Quantity = 5,
+                Images = new List<string> { "https://example.com/image2.jpg" },
+                IsActive = false
+            }
+        };
+    }
+
+    private void AddImageField()
+    {
+        newProduct.Images.Add("");
+    }
+
+    private void AddProduct()
+    {
+        if (!string.IsNullOrWhiteSpace(newProduct.Name) && newProduct.Price > 0 && newProduct.Quantity > 0)
+        {
+            newProduct.Id = products.Count + 1; // Midlertidig ID
+            products.Add(new Product
+            {
+                Id = newProduct.Id,
+                Name = newProduct.Name,
+                Description = newProduct.Description,
+                Price = newProduct.Price,
+                Quantity = newProduct.Quantity,
+                Images = new List<string>(newProduct.Images),
+                IsActive = true
+            });
+
+            // Ryd felter
+            newProduct = new Product { Images = new List<string> { "" } };
+        }
+    }
+
+    private void ToggleProductDetails(int productId)
+    {
+        var product = products.FirstOrDefault(p => p.Id == productId);
+        if (product != null)
+        {
+            product.IsExpanded = !product.IsExpanded;
+        }
+    }
+
+    private void ToggleProductStatus(Product product)
+    {
+        product.IsActive = !product.IsActive;
+    }
+
+    private void UpdateProduct(Product product)
+    {
+        // Opdater produkt (Gem i database eller API)
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public List<string> Images { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsExpanded { get; set; } = false;
+    }
+}
