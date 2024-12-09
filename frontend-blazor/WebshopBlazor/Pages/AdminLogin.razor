@@ -1,0 +1,98 @@
+@page "/admin"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Admin Login</h3>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+<div class="form-container">
+    <form @onsubmit="HandleLogin">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" class="form-control" @bind="Username" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" @bind="Password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="captcha">CAPTCHA: @CaptchaValue</label>
+            <input id="captcha" class="form-control" @bind="CaptchaInput" placeholder="Enter the CAPTCHA value" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+@code {
+    private string Username;
+    private string Password;
+    private string CaptchaInput;
+    private string CaptchaValue;
+    private string ErrorMessage;
+
+    private int CaptchaResult;
+
+    protected override void OnInitialized()
+    {
+        GenerateCaptcha();
+    }
+
+    private void GenerateCaptcha()
+    {
+        Random rand = new Random();
+        int num1 = rand.Next(1, 10);
+        int num2 = rand.Next(1, 10);
+        CaptchaValue = $"{num1} + {num2} = ?";
+        CaptchaResult = num1 + num2;
+    }
+
+    private async Task HandleLogin()
+    {
+        // Check CAPTCHA
+        if (!int.TryParse(CaptchaInput, out int captchaInputValue) || captchaInputValue != CaptchaResult)
+        {
+            ErrorMessage = "CAPTCHA is incorrect. Please try again.";
+            GenerateCaptcha();
+            return;
+        }
+
+        // Prepare login data
+        var loginData = new { username = Username, password = Password };
+
+        try
+        {
+            // Call the API
+            var response = await Http.PostAsJsonAsync("api/admin/login", loginData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                ErrorMessage = null;
+                // Navigate to the home page after successful login
+                NavigationManager.NavigateTo("/");
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                ErrorMessage = "Username and password are required.";
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                ErrorMessage = "Invalid credentials. Please try again.";
+            }
+            else
+            {
+                ErrorMessage = "An unexpected error occurred.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error connecting to the server: {ex.Message}";
+        }
+    }
+}
