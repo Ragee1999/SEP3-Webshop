@@ -20,7 +20,7 @@ public class ContactMessage {
     private String message;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdate = LocalDateTime.now();
 
 
     public Long getId() {
@@ -55,11 +55,11 @@ public class ContactMessage {
         this.message = message;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreatedate() {
+        return createdate;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedate(LocalDateTime createdate) {
+        this.createdate = createdate;
     }
 }
