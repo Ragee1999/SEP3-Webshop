@@ -1,6 +1,6 @@
 ﻿namespace WebshopBlazor.Models;
 
-public class ContactFormModel
+public class ContactMessage
 {
     public string Name { get; set; }
     public string Email { get; set; }

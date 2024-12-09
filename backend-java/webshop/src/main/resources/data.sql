@@ -1,46 +1,48 @@
 -- Insert into Address table
-INSERT INTO address (street, city, postalcode, country)
+INSERT INTO address (id, city, country, postalcode, street)
 VALUES
-    ('Niels Bohrvej 12', 'Copenhagen', '1330', 'Denmark'),
-    ('Horsensgade 122', 'Horsens', '8620', 'Denmark'),
-    ('Dalgas Vej', 'Odense', '5000', 'Denmark'),
-    ('Tingskoven 242', 'Aalborg', '9000', 'Denmark'),
-    ('Banegården 34', 'Esbjerg', '6700', 'Denmark'),
-    ('Vejlegårdsvej 11', 'Vejle', '3449', 'Denmark'),
-    ('Larsensvej 324', 'Esbjerg', '6700', 'Denmark');
+    (1, 'Copenhagen', 'Denmark', '1330', 'Niels Bohrvej 12'),
+    (2, 'Horsens', 'Denmark', '8620', 'Horsensgade 122'),
+    (3, 'Odense', 'Denmark', '5000', 'Dalgas Vej'),
+    (4, 'Aalborg', 'Denmark', '9000', 'Tingskoven 242'),
+    (5, 'Esbjerg', 'Denmark', '6700', 'Banegården 34'),
+    (6, 'Vejle', 'Denmark', '3449', 'Vejlegårdsvej 11'),
+    (7, 'Esbjerg', 'Denmark', '6700', 'Larsensvej 324');
 
-INSERT INTO customer (firstname, lastname, email, phonenumber, address_id)
+
+-- Insert into Customer table
+INSERT INTO customer (id, email, firstname, lastname, phonenumber)
 VALUES
-    ('John', 'Doe', 'john.doe@example.com', '12345678', 1),
-    ('Jesse', 'Pinkmann', 'JessePinkmann@example.com', '87654321', 2),
-    ('Walter', 'White', 'WalterWhite@example.com', '22334455', 3),
-    ('Gustavo', 'Fring', 'GustavoFring@example.com', '66778899', 4),
-    ('Hank', 'Schrader', 'HankSchrader@example.com', '99887766', 5),
-    ('Lionel', 'Messi', 'lionel.messi@example.com', '10101010', 6),
-    ('Cristiano', 'Ronaldo', 'cristiano.ronaldo@example.com', '20202020', 7);
+    (1, 'john.doe@example.com', 'John', 'Doe', '12345678'),
+    (2, 'jesse.pinkman@example.com', 'Jesse', 'Pinkmann', '87654321'),
+    (3, 'walter.white@example.com', 'Walter', 'White', '22334455'),
+    (4, 'gustavo.fring@example.com', 'Gustavo', 'Fring', '66778899'),
+    (5, 'hank.schrader@example.com', 'Hank', 'Schrader', '99887766'),
+    (6, 'lionel.messi@example.com', 'Lionel', 'Messi', '10101010'),
+    (7, 'cristiano.ronaldo@example.com', 'Cristiano', 'Ronaldo', '20202020');
+
 
 TRUNCATE TABLE product RESTART IDENTITY CASCADE;
 
-INSERT INTO product (name, image, price, stockquantity, description)
+-- Insert into Product table
+INSERT INTO product (id, description, image, name, price, stockquantity)
 VALUES
-    ('Laptop', 'laptop.jpg', 1500.00, 50, 'Laptop description'),
-    ('Smartphone', 'smartphone.jpg', 800.00, 100, 'Smartphone description'),
-    ('Tablet', 'tablet.jpg', 600.00, 75, 'Tablet description'),
-    ('Headphones', 'headphones.jpg', 200.00, 200, 'Headphones description'),
-    ('Keyboard', 'keyboard.jpg', 50.00, 150, 'Keyboard description'),
-    ('Mouse', 'mouse.jpg', 25.00, 300, 'Mouse description'),
-    ('Monitor', 'monitor.jpg', 300.00, 80, 'Monitor description');
+    (1, 'A high-performance laptop', 'laptop.jpg', 'Laptop', 1200.00, 50),
+    (2, 'Latest model smartphone with advanced features', 'smartphone.jpg', 'Smartphone', 800.00, 100),
+    (3, 'Noise-cancelling over-ear headphones', 'headphones.jpg', 'Headphones', 150.00, 200),
+    (4, '4K UHD monitor for professional use', 'monitor.jpg', 'Monitor', 300.00, 80),
+    (5, 'Mechanical keyboard with RGB lighting', 'keyboard.jpg', 'Keyboard', 100.00, 150),
+    (6, 'Portable tablet with high-resolution screen', 'tablet.jpg', 'Tablet', 600.00, 75),
+    (7, 'Wireless mouse with ergonomic design', 'mouse.jpg', 'Mouse', 25.00, 300);
 
-INSERT INTO customer_order (totalprice, totalquantity, customer_id, address_id)
-VALUES
-    (2000.00, 3, 1, 1),
-    (1200.00, 2, 2, 2),
-    (450.00, 1, 3, 3);
 
-INSERT INTO order_item (customerorder_id, product_id, quantity)
-VALUES
-    (1, 1, 1),  -- CustomerOrder 1, Product 1
-    (1, 2, 2),  -- CustomerOrder 1, Product 2
-    (2, 3, 1),  -- CustomerOrder 2, Product 3
-    (2, 4, 1),  -- CustomerOrder 2, Product 4
-    (3, 5, 1);  -- CustomerOrder 3, Product 5
+-- Creating table for contact information to store data
+
+CREATE TABLE contact_message (
+id SERIAL PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+message TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
