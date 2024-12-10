@@ -19,15 +19,27 @@ public class AdminController {
     public ResponseEntity<String> login(@RequestBody Map<String, String> loginData) {
         String username = loginData.get("username");
         String password = loginData.get("password");
+        String captchaInput = loginData.get("captchaInput");
 
-        if (username == null || password == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username and password are required.");
+        if (username == null || password == null || captchaInput == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username, password, and CAPTCHA are required.");
         }
 
+        // Authenticate user
         if (adminService.authenticate(username, password)) {
             return ResponseEntity.ok("Login successful");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials.");
         }
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> checkAdmin() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return ResponseEntity.ok("Logged out");
     }
 }

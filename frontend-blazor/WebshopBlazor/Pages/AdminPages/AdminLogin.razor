@@ -1,6 +1,8 @@
 @page "/admin"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@using Blazored.LocalStorage
+@inject ILocalStorageService localStorage
 
 <h3>Admin Login</h3>
 
@@ -63,31 +65,24 @@
             return;
         }
 
-        // Prepare login data
-        var loginData = new { username = Username, password = Password };
+        var loginData = new { username = Username, password = Password, captchaInput = CaptchaInput };
 
         try
         {
-            // Call the API
+            // Call the backend API to authenticate admin
             var response = await Http.PostAsJsonAsync("api/admin/login", loginData);
 
             if (response.IsSuccessStatusCode)
             {
-                ErrorMessage = null;
-                // Navigate to the home page after successful login
-                NavigationManager.NavigateTo("/");
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                ErrorMessage = "Username and password are required.";
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                ErrorMessage = "Invalid credentials. Please try again.";
+                // Store the login status in localStorage if login is successful
+                await localStorage.SetItemAsync("isAdminLoggedIn", true);
+
+                // After successful login, navigate to the admin dashboard
+                NavigationManager.NavigateTo("/admin/dashboard");
             }
             else
             {
-                ErrorMessage = "An unexpected error occurred.";
+                ErrorMessage = await response.Content.ReadAsStringAsync();
             }
         }
         catch (Exception ex)

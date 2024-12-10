@@ -1,4 +1,9 @@
 @page "/admin/dashboard"
+@using Blazored.LocalStorage
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
+
+<h3>Admin Dashboard</h3>
 
 <style>
     body {
@@ -110,3 +115,26 @@
         </main>
     </div>
 </div>
+
+@code {
+    private bool isAdminLoggedIn = false;
+
+    // Check login status in localStorage when the page is initialized
+    protected override async Task OnInitializedAsync()
+    {
+        isAdminLoggedIn = await localStorage.GetItemAsync<bool>("isAdminLoggedIn");
+
+        // Redirect to login if not logged in
+        if (!isAdminLoggedIn)
+        {
+            NavigateToLoginPage();
+        }
+    }
+
+    // Redirect to the login page
+    private void NavigateToLoginPage()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+}
+
