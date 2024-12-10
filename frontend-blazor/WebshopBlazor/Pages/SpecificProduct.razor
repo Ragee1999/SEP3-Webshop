@@ -1,70 +1,54 @@
 ﻿@page "/SpecificProduct/{Id:int}"
-@using WebshopBlazor.Models
+@inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <div class="row container-fluid my-5">
-    
     <!-- left section (images) -->
     <div class="col-6 p-5">
-        
-        <!-- head image -->
         <div class="border-1 border-dark border rounded">
             <img src="@product.Image" class="img-fluid h-auto my-3" style="min-height: 300px" alt="Head image of product"/>
         </div>
-        
-        <!-- alt images -->
-        <div class="my-3 mx-1 d-flex flex-row justify-content-around">
-            <div class="col-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
-            </div>
-            <div class="col-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
-            </div>
-            <div class="col-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
-            </div>
-            <div class="col-2 border-1 border-dark border rounded">
-                <img src="product.img" class="img-fluid h-auto" style="min-height: 100px" alt="Alt img of product"/>
-            </div>
-        </div>
-        
     </div>
-    
+
     <!-- right section (information) -->
     <div class="col-6 p-5">
-
-        <!-- product name section-->
         <div class="my-3">
             <h1>@product.Name</h1>
         </div>
-
-        <!-- product price section-->
         <div class="my-3">
             <h3>$@product.Price</h3>
         </div>
 
-        <!-- product add to cart section-->
-        <div class="my-3">
-            <button class="btn btn-primary" @onclick:stopPropagation="true" @onclick="AddToCart">
+        <!-- Add to Cart and Return Buttons (in a flex container for alignment) -->
+        <div class="my-3 d-flex justify-content-start">
+            <button class="btn btn-primary" @onclick="AddToCart">
                 Add to Cart
             </button>
+            <!-- Return Button on the right -->
+            <button class="btn btn-primary ms-3" @onclick="ReturnToProductPage">
+                Return
+            </button>
         </div>
-        
-        <!-- product description section-->
+
+        <!-- Feedback Message when Add to Cart is clicked -->
+        @if (isProductAdded)
+        {
+            <div class="alert alert-success mt-3">
+                <strong>Product has been added to your cart.</strong> 
+            </div>
+        }
+
         <div class="my-3">
-            <p>
-                @product.Description
-            </p>
+            <p>@product.Description</p>
         </div>
-        
     </div>
-    
 </div>
 
 @code {
     [Parameter] public int Id { get; set; }
     private Product product = new();
     private List<CartItem> cartItems = new();
+    private bool isProductAdded = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,16 +79,13 @@
     {
         Console.WriteLine($"Adding product {product.Id} to cart.");
 
-        // Check if product already exists in the cart
         var existingItem = cartItems.FirstOrDefault(item => item.Id == product.Id);
         if (existingItem != null)
         {
-            // Increment quantity
             existingItem.Quantity++;
         }
         else
         {
-            // Add new item to cart
             cartItems.Add(new CartItem
             {
                 Id = product.Id,
@@ -116,6 +97,19 @@
 
         // Save updated cart to local storage
         await LocalStorage.SetItemAsync("cartItems", cartItems);
+
+        // Show the success message
+        isProductAdded = true;
+
+        // small delay before hiding the message 
+        StateHasChanged();  
+        await Task.Delay(2000); // 2seconds
+        isProductAdded = false;
+    }
+
+    private void ReturnToProductPage()
+    {
+        NavigationManager.NavigateTo("/products"); // Navigate back to Products page
     }
 
     public class Product
@@ -124,7 +118,6 @@
         public string Name { get; set; }
         public string Image { get; set; }
         public double Price { get; set; }
-        public int StockQuantity { get; set; }
         public string Description { get; set; }
     }
 

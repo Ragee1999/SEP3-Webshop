@@ -101,3 +101,23 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+/* Hover effect on the product card */
+.card:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+    cursor: pointer; /* Change cursor to indicate the card is clickable */
+}
+
+/* Hover effect on the image inside the card */
+.card .card-img-top:hover {
+    opacity: 0.8; /* Make the image slightly transparent when hovered */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Hover effect on the product name */
+.card .card-title:hover {
+    color: #0071c1; /* Change the color of the product name */
+    text-decoration: underline; /* Underline the product name */
+    cursor: pointer; /* Make it look like a clickable element */
+}
