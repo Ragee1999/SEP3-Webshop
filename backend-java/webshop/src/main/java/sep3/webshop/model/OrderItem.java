@@ -3,38 +3,52 @@ package sep3.webshop.model;
 import jakarta.persistence.*;
 
 @Entity
-public class OrderItem
-{
+public class OrderItem {
 
-  @Id @ManyToOne @JoinColumn(name = "orderId", nullable = false) private CustomerOrder customerOrder;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  @Id @ManyToOne @JoinColumn(name = "productId", nullable = false) private Product product;
+  @ManyToOne
+  @JoinColumn(name = "orderId", nullable = false)
+  private CustomerOrder customerOrder;
 
-  @Column(nullable = false) private int quantity;
+  @ManyToOne
+  @JoinColumn(name = "productId", nullable = false)
+  private Product product;
 
-  public CustomerOrder getCustomerOrder()
-  {
+  @Column(nullable = false)
+  private int quantity;
+
+  public Long getId() {
+    return id;
+  }
+
+  public CustomerOrder getCustomerOrder() {
     return customerOrder;
   }
 
-  public Product getProduct()
-  {
+  public void setCustomerOrder(CustomerOrder customerOrder) {
+    this.customerOrder = customerOrder;
+  }
+
+  public Product getProduct() {
     return product;
   }
 
-  public int getQuantity()
-  {
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  public int getQuantity() {
     return quantity;
   }
 
-  public void addQuantity(int quantity)
-  {
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  public void addQuantity(int quantity) {
     this.quantity += quantity;
   }
-
-  public void removeQuantity(int quantity)
-  {
-    this.quantity -= quantity;
-  }
-
 }
