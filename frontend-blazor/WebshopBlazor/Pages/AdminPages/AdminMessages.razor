@@ -133,7 +133,7 @@
                                 
                                 @if (!message.IsAnswered)
                                 {
-                                    <a class="btn btn-primary" href="mailo:@message.Email">
+                                    <a class="btn btn-primary" href="mailo:@message.Email @onclick="() => 
                                         besvar
                                     </a>
                                 }
@@ -175,6 +175,25 @@
     {
         NavigationManager.NavigateTo("/admin");
     }
+    
+    private async void MarkAsAnswered(int Id)
+    {
+        messages[Id].IsAnswered = true;
+
+        var content = new StringContent(
+        System.Text.Json.JsonSerializer.Serialize(messages[Id]),
+        System.Text.Encoding.UTF8,
+        "application/json");
+        var response = await http.PostAsync("/api/contact", content);
+
+    if (!response.IsSuccessStatusCode)
+    {
+    // Handle error (e.g., logging or throwing an exception)
+    throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+    }
+        
+    }
+        
     
     //Function for extending message details
     private void ToggleOrderDetails(int messageId)

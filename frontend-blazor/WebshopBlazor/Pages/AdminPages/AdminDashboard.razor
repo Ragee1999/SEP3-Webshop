@@ -135,6 +135,7 @@
         }
         http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
         Products = await http.GetFromJsonAsync<List<Product>>("/products");
+        Orders = await http.GetFromJsonAsync<List<Order>>("/orders");
         Messages = await http.GetFromJsonAsync<List<ContactMessage>>("/api/contact");
 
 

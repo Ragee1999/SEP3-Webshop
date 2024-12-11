@@ -138,10 +138,10 @@
                                 
                                 @if (order.Status.Equals("waiting"))
                                 {
-                                <button>
+                                <button @onclick="() => MarkAsShipped(order.Id)">
                                     mark as shipped
                                 </button>
-                                <button>
+                                <button @onclick="() => MarkAsCancelled(order.Id)">
                                     cancel order
                                 </button> 
                                 }
@@ -180,7 +180,7 @@
     }
 
     //Function for extending order details
-    private void ToggleOrderDetails(long orderId)
+    private void ToggleOrderDetails(int orderId)
     {
         if (ExpandedOrders.Contains(orderId))
         {
@@ -189,6 +189,40 @@
         else
         {
             ExpandedOrders.Add(orderId);
+        }
+    }
+    
+    private void MarkAsShipped(int orderId)
+    {
+        orders[orderId].Status = "shipped";
+
+        var content = new StringContent(
+        System.Text.Json.JsonSerializer.Serialize(orders[orderId]),
+        System.Text.Encoding.UTF8,
+        "application/json");
+        var response = await http.PostAsync("/orders", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+        // Handle error (e.g., logging or throwing an exception)
+        throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+        }
+    }
+
+    private void MarkAsCancelled(int orderId)
+    {
+        orders[orderId].Status = "cancelled";
+
+        var content = new StringContent(
+        System.Text.Json.JsonSerializer.Serialize(orders[orderId]),
+        System.Text.Encoding.UTF8,
+        "application/json");
+        var response = await http.PostAsync("/orders", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // Handle error (e.g., logging or throwing an exception)
+            throw new Exception($"Failed to update product: {response.ReasonPhrase}");
         }
     }
 

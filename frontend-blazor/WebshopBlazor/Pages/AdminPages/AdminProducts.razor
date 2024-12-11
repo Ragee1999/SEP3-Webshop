@@ -199,7 +199,7 @@
             System.Text.Encoding.UTF8,
     "application/json");
         
-        var response = await http.PutAsync($"/products/{product.Id}", content);
+        var response = await http.PutAsync($"/products", content);
         
         if (!response.IsSuccessStatusCode)
         {
