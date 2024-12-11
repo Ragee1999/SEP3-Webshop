@@ -30,6 +30,11 @@ public class CustomerOrderController {
         return ResponseEntity.ok(customerOrderService.getAllOrdersByCustomer(customerId));
     }
 
+    @GetMapping public ResponseEntity<List<CustomerOrder>> getAllOrders()
+    {
+        return ResponseEntity.ok(customerOrderService.getAllOrders());
+    }
+
     @PostMapping("/checkout/{orderId}")
     public ResponseEntity<Void> checkoutOrder(@PathVariable Long orderId) {
         customerOrderService.checkoutOrder(orderId);

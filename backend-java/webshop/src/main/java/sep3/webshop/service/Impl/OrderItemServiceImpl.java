@@ -21,6 +21,11 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemRepository.findByCustomerOrderId(orderId);
     }
 
+    @Override public List<OrderItem> getAllOrderItems()
+    {
+        return orderItemRepository.findAll();
+    }
+
     @Override
     public OrderItem updateOrderItemQuantity(Long orderItemId, int newQuantity) {
         OrderItem item = orderItemRepository.findById(orderItemId)

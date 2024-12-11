@@ -67,6 +67,12 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     }
 
     @Override
+    public List<CustomerOrder> getAllOrders()
+    {
+        return customerOrderRepository.findAll();
+    }
+
+    @Override
     public CustomerOrder getOrderById(Long orderId) {
         return customerOrderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));

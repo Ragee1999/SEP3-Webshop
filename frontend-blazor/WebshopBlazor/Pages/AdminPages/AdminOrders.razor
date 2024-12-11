@@ -115,33 +115,37 @@
             </div>
             </div>
 
+            
             <div class="order-list">
                 @foreach (var order in orders)
                 {
                     <div class="order-item">
                         <button class="order-header" @onclick="() => ToggleOrderDetails(order.Id)">
-                            Ordre ID: @order.Id - Total: @order.Total.ToString("C")
+                            Ordre ID: @order.Id - Total: @order.TotalPrice.ToString("C")
                         </button>
-                        @if (order.IsExpanded)
+                        @if (ExpandedOrders.Contains(order.Id))
                         {
                             <div class="order-details">
-                                <p><strong>Kunde:</strong> @order.CustomerName</p>
-                                <p><strong>Addresse:</strong> @order.Address</p>
+                                <p><strong>Kunde:</strong></p>
+                                <p><strong>Addresse:</strong></p>
                                 <h5>Produkter:</h5>
                                 <ul>
-                                    @foreach (var product in order.Products)
+                                    @foreach (var product in getProductsinOrder(order.Id))
                                     {
-                                        <li>@product.Name - @product.Quantity x @product.Price.ToString("C")</li>
+                                        <li>@product.name - @product.quantity x $@product.price</li>
                                     }
                                 </ul>
                                 
-                                <!-- der skal indføres en if statement, så de kun kommer frem hvis ordren er ikke sendt endnu-->
+                                @if (order.Status.Equals("waiting"))
+                                {
                                 <button>
                                     mark as shipped
                                 </button>
                                 <button>
                                     cancel order
-                                </button>
+                                </button> 
+                                }
+                                
                             </div>
                         }
                     </div>
@@ -152,73 +156,105 @@
 </div>
 
 @code {
+    private HttpClient http;
+    private List<long> ExpandedOrders = new List<long>();
     private List<Order> orders = new List<Order>();
+    private List<Product> products = new List<Product>();
+    private List<OrderItem> orderitems = new List<OrderItem>();
+    private List<Address> addresses = new List<Address>();
     private int totalOrders;
     private int ordersThisMonth;
     private int ordersLastMonth;
 
     protected override async Task OnInitializedAsync()
     {
-        // Mock data - Du kan erstatte dette med data hentet fra API eller database
-        orders = new List<Order>
-        {
-            new Order
-            {
-                Id = 1,
-                CustomerName = "John Doe",
-                Address = "123 Main St, København",
-                Products = new List<Product>
-                {
-                    new Product { Name = "Produkt 1", Quantity = 2, Price = 199.99m },
-                    new Product { Name = "Produkt 2", Quantity = 1, Price = 299.99m }
-                },
-                Total = 699.97m,
-                Date = DateTime.Now
-            },
-            new Order
-            {
-                Id = 2,
-                CustomerName = "Jane Smith",
-                Address = "456 Elm St, Aarhus",
-                Products = new List<Product>
-                {
-                    new Product { Name = "Produkt 3", Quantity = 3, Price = 99.99m },
-                    new Product { Name = "Produkt 4", Quantity = 1, Price = 149.99m }
-                },
-                Total = 449.96m,
-                Date = DateTime.Now.AddMonths(-1)
-            }
-        };
-
+        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+        orders = await http.GetFromJsonAsync<List<Order>>("/orders");
+        products = await http.GetFromJsonAsync<List<Product>>("/products");
+        orderitems = await http.GetFromJsonAsync<List<OrderItem>>("/order-items");
+        
+        
         totalOrders = orders.Count;
         ordersThisMonth = orders.Count(o => o.Date.Month == DateTime.Now.Month);
         ordersLastMonth = orders.Count(o => o.Date.Month == DateTime.Now.AddMonths(-1).Month);
     }
 
-    private void ToggleOrderDetails(int orderId)
+    //Function for extending order details
+    private void ToggleOrderDetails(long orderId)
     {
-        var order = orders.FirstOrDefault(o => o.Id == orderId);
-        if (order != null)
+        if (ExpandedOrders.Contains(orderId))
         {
-            order.IsExpanded = !order.IsExpanded;
+            ExpandedOrders.Remove(orderId);
         }
+        else
+        {
+            ExpandedOrders.Add(orderId);
+        }
+    }
+
+    
+    //Get a list of orderitems based on order id
+    private List<ProductInOrder> getProductsinOrder(long orderId)
+    {
+        List<ProductInOrder> result = new List<ProductInOrder>();
+        foreach (var oi in orderitems)
+        {
+            if (oi.OrderId == orderId)
+            {
+                result.Add(new ProductInOrder()
+                {
+                    name = products[oi.ProductId].Name,
+                    price = products[oi.ProductId].Price,
+                    quantity = oi.Quantity 
+                });
+            }
+        }
+
+        return result;
     }
     
     public class Order
     {
         public int Id { get; set; }
-        public string CustomerName { get; set; }
-        public string Address { get; set; }
-        public List<Product> Products{ get; set; }
-        public decimal Total { get; set; }
+        public int CustomerId { get; set; }
+        public int AddressId { get; set; }
+        public string Status { get; set; }
+        public int totalQuantity { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime Date { get; set; }
-        public bool IsExpanded { get; set; } = false;
     }
 
     public class Product
     {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
         public string Name { get; set; }
-        public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public int StockQuantity { get; set; }
+    }
+    
+    public class OrderItem
+    {
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class ProductInOrder
+    {
+        public string name { get; set; }
+        public decimal price { get; set; }
+        public int quantity { get; set; }
+    }
+    
+    public class Address
+    {
+        public int Id { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string PostalCode { get; set; }
+        public string Street { get; set; }
     }
 }

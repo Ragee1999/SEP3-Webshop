@@ -10,6 +10,8 @@ public interface CustomerOrderService {
 
     List<CustomerOrder> getAllOrdersByCustomer(Long customerId);
 
+    List<CustomerOrder> getAllOrders();
+
     CustomerOrder getOrderById(Long orderId);
 
     void checkoutOrder(Long orderId);
