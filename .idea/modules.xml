@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SEP3-Webshop.iml" filepath="$PROJECT_DIR$/.idea/SEP3-Webshop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend-java/webshop/webshop.iml" filepath="$PROJECT_DIR$/backend-java/webshop/webshop.iml" />
     </modules>
   </component>
 </project>

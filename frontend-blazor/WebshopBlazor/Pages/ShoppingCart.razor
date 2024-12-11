@@ -1,6 +1,8 @@
 ﻿@page "/Cart"
 @using Blazored.LocalStorage
 @inject ILocalStorageService LocalStorage
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -213,14 +215,34 @@ else
     {
         await LocalStorage.SetItemAsync("cartItems", cartItems);
     }
-
-    // Checkout logic placeholder
+    
     private async Task Checkout()
     {
-        await LocalStorage.RemoveItemAsync("cartItems");
-        cartItems.Clear();
-        UpdateCartTotal();
+        try
+        {
+            // Call the backend to create a Stripe Checkout session
+            var response = await Http.PostAsJsonAsync("api/stripe/create-checkout-session", cartItems);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Retrieve the URL returned by the backend
+                var sessionUrl = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Received session URL: {sessionUrl}");  // Log the session URL
+
+                // Redirect the user to the Stripe Checkout page
+                NavigationManager.NavigateTo(sessionUrl, true);
+            }
+            else
+            {
+                Console.WriteLine("Failed to create Stripe session");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during checkout: {ex.Message}");
+        }
     }
+
 
     public class CartItem
     {

@@ -75,5 +75,8 @@ public class Product {
         this.description = description;
     }
 
-
+    public Object getQuantity()
+    {
+        return null;
+    }
 }
