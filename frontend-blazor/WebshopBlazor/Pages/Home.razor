@@ -1,7 +1,182 @@
 ﻿@page "/"
 @using WebshopBlazor.Models
 
-<PageTitle>Alperen's Kiosk</PageTitle>
+<PageTitle>EleC</PageTitle>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+    
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Lato', sans-serif;
+        font-weight: 700; 
+        color: #007bff; 
+    }
+
+    p, .card-text, .about-us-section p {
+        font-family: 'Lato', sans-serif;
+        font-weight: 300; 
+        line-height: 1.6;
+        font-size: 1.1rem;
+        color: #555;
+    }
+
+    .btn {
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Retain Existing Styles */
+    .video-banner {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .video-banner video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    .banner-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        z-index: 1;
+    }
+
+    .banner-content h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .banner-content a {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .banner-content a:hover {
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    .banner-content h1 {
+        background: linear-gradient(100deg, #54bab1, #feb47b); 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        text-shadow: none; 
+    }
+
+
+    /* Featured Products Section Styling */
+    #featured-products {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        border-radius: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-footer a {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        border-radius: 50px;
+        background-color: #007bff;
+        color: white;
+        transition: background-color 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    .card-footer a:hover {
+        background-color: #0056b3;
+    }
+
+    /* About Us Section Styling */
+    .about-us-section {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 20px;
+        margin-top: 40px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-us-section h3 {
+        color: #007bff;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .about-us-section img {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contact Us Section */
+    .text-center h3 {
+        color: #dc3545;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .text-center p {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-danger {
+        border-radius: 50px;
+        padding: 15px 30px;
+        transition: background-color 0.3s, transform 0.2s;
+        text-decoration: none;
+        font-size: 1.2rem;
+    }
+
+    .btn-danger:hover {
+        background-color: #b32025;
+        transform: scale(1.05);
+    }
+</style>
 
 @{
 // Dummy Products Data
@@ -9,63 +184,68 @@ var products = new List<Product>
 {
 new Product
 {
-Name = "Product 1",
-Description = "A brief description of Product 1.",
-Price = 29.99m,
-ImageUrl = "https://images.samsung.com/is/image/samsung/assets/global/mkt/smartphones/galaxy-s24/gallery/galaxy-s24plus/S24Plus-Color-Sapphire_Blue_MO.jpg"
+Name = "Laptop",
+Description = "Lenovo laptops are reliable and versatile, offering options for work, gaming, and everyday use with sleek designs and strong performance.",
+Price = 7999m,
+ImageUrl = "https://cdn.lomax.dk/images/t_item_max/f_auto/v1711357416/produkter/70191830_1/lenovo-ideapad-1-15amn7-156-barbar-computer-gra-1.jpg"
 },
 new Product
 {
-Name = "Product 2",
-Description = "A brief description of Product 2.",
-Price = 19.99m,
-ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sucuk-1.jpg/640px-Sucuk-1.jpg"
+Name = "Mouse",
+Description = "Lenovo mice are ergonomic and responsive, designed for smooth navigation and precise control, ideal for work or gaming.",
+Price = 249m,
+ImageUrl = "https://www.proshop.dk/Images/1600x1200/2936938_1b594f7d6f74.jpg"
 },
 new Product
 {
-Name = "Product 3",
-Description = "A brief description of Product 3.",
-Price = 39.99m,
-ImageUrl = "https://s3.eu-north-1.amazonaws.com/assets.boosted.dk/2022/09/22112422/Audi-RS8-1a-1536x832.jpeg"
+Name = "Tablet",
+Description = "Lenovo tablets are sleek and versatile, offering vibrant displays and powerful performance for work, entertainment, and on-the-go use.",
+Price = 3500m,
+ImageUrl = "https://p1-ofp.static.pub//fes/cms/2024/05/24/l00v181zmokewobpvy9j8uw8pw9wnl135377.png"
 }
 };
 
-//  About Us Data
+// About Us Data
 var aboutUs = new AboutUs
 {
 Title = "About Us",
-Description = "Welcome to Alperen's Kiosk, where we offer a variety of quality products at the best prices. Our mission is to bring convenience and value to your shopping experience. Explore our wide range of products and make your day better!",
+Description = "Welcome to EleC, where we offer a wide range of high-quality electronics at unbeatable prices. Our mission is to make technology accessible and convenient for everyone. Discover our extensive collection of devices and gadgets, and elevate your tech experience today!",
 ImageUrl = "https://megansmoving.com/wp-content/uploads/2016/11/fragile-contents-inside-picture-id886423850.jpg"
 };
 }
 
-<!-- Large Product Banner Section -->
-<section class="product-banner position-relative">
-    <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="img-fluid w-100" alt="Product Banner" />
-    <div class="banner-content position-absolute top-50 start-50 translate-middle text-center text-white">
-        <a href="#featured-products" class="btn btn-light btn-lg">Show More</a>
+<!-- Background Video Banner -->
+<div class="video-banner">
+    <video autoplay muted loop>
+        <source src="https://cdn.pixabay.com/video/2023/06/30/169445-841382824_large.mp4" type="video/mp4" />
+        <!-- Fallback Text -->
+        Your browser does not support the video tag.
+    </video>
+    <div class="banner-content">
+        <h1>Welcome to EleC, Denmark's Leading Electronics Store </h1>
+        <a href="#featured-products">Shop Now</a>
     </div>
-</section>
+</div>
 
 <!-- Main Content Section -->
 <div class="container my-5">
 
     <!-- Featured Products Section -->
     <section id="featured-products" class="row mb-5">
-        <div class="col-md-12 text-center mb-4 text-center text-primary mb-4">
-            <h2>Featured Products</h2>
+        <div class="col-md-12 text-center mb-4">
+            <h2 class="text-primary">Featured Products</h2>
             <p class="text-muted">Check out our top picks!</p>
         </div>
 
         @foreach (var product in products)
         {
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="card shadow-sm border-light">
                 <img src="@product.ImageUrl" class="card-img-top img-fluid" style="height: 250px" alt="Product Image" />
                 <div class="card-body">
                     <h5 class="card-title">@product.Name</h5>
                     <p class="card-text">@product.Description</p>
-                    <h6 class="text-success">$@product.Price.ToString("C")</h6>
+                    <h6 class="text-success">@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("da-DK"))</h6>
                 </div>
                 <div class="card-footer text-center">
                     <a href="/products" class="btn btn-primary">View More</a>
@@ -76,21 +256,20 @@ ImageUrl = "https://megansmoving.com/wp-content/uploads/2016/11/fragile-contents
     </section>
 
     <!-- About Us Section -->
-    <section class="row">
+    <section class="about-us-section">
         <div class="col-md-6">
-            <h3 class="text-center mb-3">@aboutUs.Title</h3>
-            <p class="text-muted">@aboutUs.Description</p>
+            <h3>@aboutUs.Title</h3>
+            <p>@aboutUs.Description</p>
         </div>
         <div class="col-md-6 text-center">
             <img src="@aboutUs.ImageUrl" alt="Kiosk Image" class="img-fluid rounded">
         </div>
     </section>
 
-    <!-- Call to Action Section -->
+    <!-- Contact Us Section -->
     <section class="text-center mt-5">
-        <h3>Don't Miss Out!</h3>
-        <p>Get exclusive deals and offers by joining our newsletter.</p>
-        <a href="/contact" class="btn btn-danger btn-lg">Contact Us</a>
+        <h3>Do You Want to Trade Your Electronics?</h3>
+        <p>Have any questions? Contact us to learn more about how you can trade your electronics for great deals!</p>
+        <a href="/contact" class="btn btn-danger">Contact Us</a>
     </section>
 </div>
-

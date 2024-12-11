@@ -2,6 +2,115 @@
 @using Blazored.LocalStorage
 @inject ILocalStorageService LocalStorage
 
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+    /* Global Styling */
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h3 {
+        font-weight: 700;
+        color: #007bff;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead th {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        font-weight: 700;
+        padding: 10px;
+    }
+
+    .table tbody td {
+        text-align: center;
+        padding: 10px;
+        vertical-align: middle;
+    }
+
+    .table tfoot td {
+        font-weight: 700;
+        text-align: right;
+        padding: 10px;
+    }
+
+    .btn {
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 50px;
+        padding: 10px 20px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #b32025;
+        transform: scale(1.05);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    .empty-cart {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: #555;
+        margin-top: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+</style>
+
 <h3>Shopping Cart</h3>
 
 @if (cartItems.Count > 0)
@@ -21,9 +130,10 @@
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>@item.Price</td>
+                    <td>@item.Price.ToString("F2")</td>
                     <td>
-                        <input type="number" value="@item.Quantity" min="1" @onchange="(e) => UpdateQuantity(item, int.Parse(e.Value.ToString()))" />
+                        <input type="number" value="@item.Quantity" min="1" class="form-control"
+                               @onchange="(e) => UpdateQuantity(item, int.Parse(e.Value.ToString()))" />
                     </td>
                     <td>@(item.Price * item.Quantity)</td>
                     <td>
@@ -35,17 +145,19 @@
         <tfoot>
             <tr>
                 <td colspan="3"><strong>Total</strong></td>
-                <td colspan="2">@cartTotal</td>
+                <td colspan="2">@cartTotal.ToString("F2")</td>
             </tr>
         </tfoot>
     </table>
 
-    <button class="btn btn-secondary" @onclick="ClearCart">Clear Cart</button>
-    <button class="btn btn-success" @onclick="Checkout">Checkout</button>
+    <div class="action-buttons">
+        <button class="btn btn-secondary" @onclick="ClearCart">Clear Cart</button>
+        <button class="btn btn-success" @onclick="Checkout">Checkout</button>
+    </div>
 }
 else
 {
-    <p>Your cart is empty.</p>
+    <p class="empty-cart">Your cart is empty. Start shopping now!</p>
 }
 
 @code {
@@ -102,10 +214,9 @@ else
         await LocalStorage.SetItemAsync("cartItems", cartItems);
     }
 
-    // at this moment we just clear the checkout, since daniel needs to add stripe integration
+    // Checkout logic placeholder
     private async Task Checkout()
     {
-      
         await LocalStorage.RemoveItemAsync("cartItems");
         cartItems.Clear();
         UpdateCartTotal();
