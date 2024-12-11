@@ -2,78 +2,198 @@
 @inject HttpClient HttpClient
 @using WebshopBlazor.Models
 
-<h3>Contact Us</h3>
+<!-- Include Lato Font -->
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
-@if (isSubmitting)
-{
-<p>Submitting your message...</p>
-}
-else if (submitSuccess)
-{
-<p class="text-success">Your message has been sent successfully!</p>
-}
-else if (submitError)
-{
-<p class="text-danger">An error occurred while sending your message. Please try again.</p>
-}
+<style>
+    /* Global Styling */
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
 
-<EditForm Model="contactMessage" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    h3, h4 {
+        font-weight: 700;
+        color: #007bff;
+        text-align: center;
+        margin-top: 20px;
+    }
 
-    <div class="mb-3">
-        <label for="name" class="form-label">Your Name</label>
-        <InputText id="name" class="form-control" @bind-Value="contactMessage.Name" />
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">Your Email</label>
-        <InputText id="email" type="email" class="form-control" @bind-Value="contactMessage.Email" />
-    </div>
-    <div class="mb-3">
-        <label for="message" class="form-label">Your Message</label>
-        <InputTextArea id="message" class="form-control" @bind-Value="contactMessage.Message" />
-    </div>
-    <button type="submit" class="btn btn-primary" disabled="@isSubmitting">Send Message</button>
-</EditForm>
+    p {
+        font-weight: 300;
+        line-height: 1.6;
+        font-size: 1rem;
+        text-align: center;
+        color: #555;
+    }
+
+    .text-success {
+        color: #28a745;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .contact-form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+
+    .btn {
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        padding: 10px 20px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease-in-out, transform 0.2s;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:disabled {
+        background-color: #6c757d;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .map-container {
+        max-width: 500px;
+        margin: 30px auto;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    iframe {
+        width: 100%;
+        height: 300px;
+        border: none;
+    }
+</style>
+
+<div class="contact-form-container">
+    <h3>Contact Us</h3>
+
+    @if (isSubmitting)
+    {
+        <p>Submitting your message...</p>
+    }
+    else if (submitSuccess)
+    {
+        <p class="text-success">Your message has been sent successfully!</p>
+    }
+    else if (submitError)
+    {
+        <p class="text-danger">An error occurred while sending your message. Please try again.</p>
+    }
+
+    <EditForm Model="contactMessage" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Your Name</label>
+            <InputText id="name" class="form-control" @bind-Value="contactMessage.Name" />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Your Email</label>
+            <InputText id="email" type="email" class="form-control" @bind-Value="contactMessage.Email" />
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Your Message</label>
+            <InputTextArea id="message" class="form-control" @bind-Value="contactMessage.Message" rows="5" />
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" disabled="@isSubmitting">Send Message</button>
+        </div>
+    </EditForm>
+</div>
+
+<!-- Map Section -->
+<div class="map-container">
+    <h4>Visit Our Store</h4>
+    <p>You can find us at our physical location for any in-person inquiries or purchases. We look forward to seeing you!</p>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.325961856258!2d9.835058947532303!3d55.86343664249704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464b4e5ef8dbae15%3A0x0!2zNTXCsDUxJzQ4LjQiTiA5wrA1MCczMi43IkU!5e0!3m2!1sen!2sdk!4v1679313379973!5m2!1sen!2sdk"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
 
 @code {
-private ContactMessage contactMessage = new();
-private bool isSubmitting = false;
-private bool submitSuccess = false;
-private bool submitError = false;
+    private ContactMessage contactMessage = new();
+    private bool isSubmitting = false;
+    private bool submitSuccess = false;
+    private bool submitError = false;
 
-private async Task HandleValidSubmit()
-{
-isSubmitting = true;
-submitSuccess = false;
-submitError = false;
+    private async Task HandleValidSubmit()
+    {
+        isSubmitting = true;
+        submitSuccess = false;
+        submitError = false;
 
-try
-{
-// Send data to the backend
-var response = await HttpClient.PostAsJsonAsync("api/contact", contactMessage);
+        try
+        {
+            // Send data to the backend
+            var response = await HttpClient.PostAsJsonAsync("api/contact", contactMessage);
 
-if (response.IsSuccessStatusCode)
-{
-submitSuccess = true;
-contactMessage = new(); // Reset the form
-}
-else
-{
-submitError = true;
-Console.WriteLine($"Error: {response.StatusCode}");
-}
-}
-catch (Exception ex)
-{
-submitError = true;
-Console.WriteLine($"Exception: {ex.Message}");
-}
-finally
-{
-isSubmitting = false;
-}
-}
-
-
+            if (response.IsSuccessStatusCode)
+            {
+                submitSuccess = true;
+                contactMessage = new(); // Reset the form
+            }
+            else
+            {
+                submitError = true;
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            submitError = true;
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
     }
+}

@@ -1,44 +1,125 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Alperens kiosk</a>
+﻿<div class="top-row navbar bg-primary text-white shadow">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold fs-4 text-white" href="">EleC</a>
+        <button class="navbar-toggler d-md-none" onclick="toggleNavMenu()">
+            <i class="bi bi-list text-white fs-2"></i>
+        </button>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div id="nav-menu" class="nav-scrollable">
     <nav class="flex-column">
-        <div class="nav-item px-3">
+        <!-- Home Link -->
+        <div class="nav-item">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <i class="bi bi-house-door-fill me-2"></i> Home
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
+        <!-- Products Link -->
+        <div class="nav-item">
             <NavLink class="nav-link" href="products">
-                <span class="bi bi-tags" aria-hidden="true"></span>
-                Products
+                <i class="bi bi-tags me-2"></i> Products
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
+        <!-- Contact Link -->
+        <div class="nav-item">
             <NavLink class="nav-link" href="contact">
-                <span class="bi bi-envelope" aria-hidden="true"></span>
-                Contact
+                <i class="bi bi-envelope me-2"></i> Contact
             </NavLink>
         </div>
-        
-        <div class="nav-item px-3">
+
+        <!-- Customers Link -->
+        <div class="nav-item">
             <NavLink class="nav-link" href="customers">
-                <span class="bi bi-envelope" aria-hidden="true"></span>
-                Customer
+                <i class="bi bi-people-fill me-2"></i> Customers
             </NavLink>
         </div>
-        <!-- New Link for TestApi -->
-        <div class="nav-item px-3">
+
+        <!-- Cart Link -->
+        <div class="nav-item">
             <NavLink class="nav-link" href="cart">
-                <span class="bi bi-box-seam-fill-nav-menu" aria-hidden="true"></span> Cart
+                <i class="bi bi-cart-fill me-2"></i> Cart
             </NavLink>
         </div>
     </nav>
 </div>
+
+<style>
+    /* Top Navbar Styling */
+    .top-row {
+        padding: 15px;
+        background-color: #007bff; 
+        color: white;
+    }
+
+    .navbar-toggler {
+        background: none;
+        border: none;
+    }
+
+    /* Scrollable Navigation Styling */
+    .nav-scrollable {
+        background-color: #007bff; 
+        padding: 20px 0;
+        border-top: 2px solid #007bff; 
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); 
+    }
+
+    /* Navigation Links */
+    .nav-item {
+        margin: 10px 0;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        font-family: 'Lato', sans-serif;
+        font-size: 1rem;
+        color: #d1d1d1; /* Light gray */
+        font-weight: 700;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-link:hover {
+        background-color: #007bff; 
+        color: white;
+    }
+
+    .nav-link.active {
+        font-weight: 700;
+        background-color: #007bff; 
+        color: white;
+    }
+
+    .nav-link i {
+        font-size: 1.4rem;
+    }
+
+    /* Shadow and Borders */
+    .shadow {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+
+    .nav-scrollable {
+        display: block;
+    }
+    
+
+ 
+    .nav-scrollable.active {
+        display: block;
+    }
+</style>
+
+<script>
+    function toggleNavMenu() {
+        const menu = document.getElementById('nav-menu');
+        menu.classList.toggle('active');
+    }
+</script>

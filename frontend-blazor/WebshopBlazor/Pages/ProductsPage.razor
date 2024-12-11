@@ -2,34 +2,106 @@
 
 <PageTitle>Our Products</PageTitle>
 
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+    
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    p {
+        font-weight: 300;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    /* Product Card Styling */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card img {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .card-title:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .text-success {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    .rounded-top {
+        background-color: #f1f1f1;
+    }
+
+    /* Empty Products Message */
+    .text-center p {
+        font-size: 1.2rem;
+        color: #888;
+    }
+
+    /* Responsive Container Padding */
+    .container {
+        padding-top: 20px;
+    }
+</style>
+
 <div class="container my-5">
     <h2 class="text-center mb-4">Our Featured Products</h2>
 
     <div class="row">
         @if (products.Count > 0)
         {
-            @foreach (var product in products)
-            {
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="rounded-top bg-light text-center" style="height: 200px;" @onclick="() => NavigateToProduct(product.Id)">
-                            <img src="@product.Image" class="card-img-top img-fluid" alt="@product.Name" style="height: 100%; object-fit: contain;" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title text-center text-dark" @onclick="() => NavigateToProduct(product.Id)">
-                                @product.Name
-                            </h5>
-                            <h6 class="text-success text-center">$@product.Price</h6>
-                        </div>
-                    </div>
+        @foreach (var product in products)
+        {
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="rounded-top bg-light text-center" style="height: 200px;" @onclick="() => NavigateToProduct(product.Id)">
+                    <img src="@product.Image" class="card-img-top img-fluid" alt="@product.Name" style="height: 100%; object-fit: contain;" />
                 </div>
-            }
+                <div class="card-body">
+                    <h5 class="card-title text-center text-dark" @onclick="() => NavigateToProduct(product.Id)">
+                        @product.Name
+                    </h5>
+                    <!-- Price in Danish Kroner -->
+                    <h6 class="text-success text-center">@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("da-DK"))</h6>
+                </div>
+            </div>
+        </div>
+        }
         }
         else
         {
-            <div class="col-12 text-center">
-                <p>No products available at the moment. Please check back later.</p>
-            </div>
+        <div class="col-12 text-center">
+            <p>No products available at the moment. Please check back later.</p>
+        </div>
         }
     </div>
 </div>
@@ -37,38 +109,38 @@
 @inject NavigationManager NavigationManager
 
 @code {
-    private List<Product> products = new();
+private List<Product> products = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadProducts();
-    }
+protected override async Task OnInitializedAsync()
+{
+await LoadProducts();
+}
 
-    private async Task LoadProducts()
-    {
-        try
-        {
-            var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-            var allProducts = await http.GetFromJsonAsync<List<Product>>("/products");
+private async Task LoadProducts()
+{
+try
+{
+var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+var allProducts = await http.GetFromJsonAsync<List<Product>>("/products");
 
-            products = allProducts?.Where(p => !string.IsNullOrWhiteSpace(p.Image)).ToList() ?? new List<Product>();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error fetching products: {ex.Message}");
-        }
-    }
+products = allProducts?.Where(p => !string.IsNullOrWhiteSpace(p.Image)).ToList() ?? new List<Product>();
+}
+catch (Exception ex)
+{
+Console.WriteLine($"Error fetching products: {ex.Message}");
+}
+}
 
-    private void NavigateToProduct(long productId)
-    {
-        NavigationManager.NavigateTo($"/SpecificProduct/{productId}");
-    }
+private void NavigateToProduct(long productId)
+{
+NavigationManager.NavigateTo($"/SpecificProduct/{productId}");
+}
 
-    public class Product
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public double Price { get; set; }
-    }
+public class Product
+{
+public long Id { get; set; }
+public string Name { get; set; }
+public string Image { get; set; }
+public double Price { get; set; }
+}
 }
