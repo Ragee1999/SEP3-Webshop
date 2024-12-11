@@ -192,7 +192,7 @@
         }
     }
     
-    private void MarkAsShipped(int orderId)
+    private async void MarkAsShipped(int orderId)
     {
         orders[orderId].Status = "shipped";
 
@@ -209,7 +209,7 @@
         }
     }
 
-    private void MarkAsCancelled(int orderId)
+    private async void MarkAsCancelled(int orderId)
     {
         orders[orderId].Status = "cancelled";
 

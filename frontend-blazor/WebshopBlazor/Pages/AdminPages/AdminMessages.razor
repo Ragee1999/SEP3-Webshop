@@ -133,7 +133,7 @@
                                 
                                 @if (!message.IsAnswered)
                                 {
-                                    <a class="btn btn-primary" href="mailo:@message.Email @onclick="() => 
+                                    <a class="btn btn-primary" href="mailo:@message.Email" @onclick="() => MarkAsAnswered(message.Id)">
                                         besvar
                                     </a>
                                 }
