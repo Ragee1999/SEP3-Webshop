@@ -1,4 +1,5 @@
 @page "/admin/products"
+@inject IJSRuntime jsRuntime
 
 <style>
     .add-product-form, .product-details {
@@ -105,36 +106,41 @@
             <div class="product-list">
                 @foreach (var product in products)
                 {
-                    <div class="product-item">
-                        <button class="product-header" @onclick="() => ToggleExpandbutton(product.Id)">
-                            @product.Name (ID: @product.Id)
-                        </button>
-                        @if (expandedproducts.Contains(product.Id))
-                        {
-                            <div class="product-details">
-                                <p><strong>Beskrivelse:</strong> @product.Description</p>
-                                <p><strong>Pris:</strong> @product.Price.ToString("C")</p>
-                                <p><strong>Antal:</strong> @product.StockQuantity</p>
-                                <p><strong>Billede:</strong> @product.Image</p>
+                <div class="product-item">
+                    <button class="product-header" @onclick="() => ToggleExpandbutton(product.Id)">
+                        @product.Name (ID: @product.Id)
+                    </button>
+                    @if (expandedproducts.Contains(product.Id))
+                    {
+                    <div class="product-details">
+                        <p><strong>Beskrivelse:</strong> @product.Description</p>
+                        <p><strong>Pris:</strong> @product.Price.ToString("C")</p>
+                        <p><strong>Antal:</strong> @product.StockQuantity</p>
+                        <p><strong>Billede:</strong> @product.Image</p>
 
-                                <!-- Redigering af produkt -->
-                                <h5>Rediger Produkt</h5>
-                                <label>Beskrivelse:</label>
-                                <textarea @bind="product.Description"></textarea>
+                        <!-- Redigering af produkt -->
+                        <h5>Rediger Produkt</h5>
+                        <label>Beskrivelse:</label>
+                        <textarea @bind="product.Description"></textarea>
 
-                                <label>Pris:</label>
-                                <input type="number" step="0.01" @bind="product.Price" />
+                        <label>Pris:</label>
+                        <input type="number" step="0.01" @bind="product.Price" />
 
-                                <label>Antal:</label>
-                                <input type="number" @bind="product.StockQuantity" />
-                    
-                                <label>Billede:</label>
-                                <textarea @bind="product.Image"></textarea>
-                    
-                                <button @onclick="() => UpdateProductAsync(product)">Opdater Produkt</button>
-                            </div>
-                        }
+                        <label>Antal:</label>
+                        <input type="number" @bind="product.StockQuantity" />
+
+                        <label>Billede:</label>
+                        <textarea @bind="product.Image"></textarea>
+
+                        <!-- Update Button -->
+                        <button class="btn btn-primary mt-2" @onclick="() => UpdateProductAsync(product)">Opdater Produkt</button>
+
+                        <!-- Remove Button -->
+                        <button class="btn btn-danger mt-2" @onclick="() => RemoveProductAsync(product.Id)">Fjern Produkt</button>
+
                     </div>
+                    }
+                </div>
                 }
             </div>
         </main>
@@ -160,22 +166,40 @@
 
     private async Task AddProduct()
     {
-        if (!string.IsNullOrWhiteSpace(newProduct.Name) && newProduct.Price > 0 && newProduct.StockQuantity >= 0 && newProduct.Image != null)
+
+        // Validate the other fields
+        if (!string.IsNullOrWhiteSpace(newProduct.Name) && newProduct.Price > 0 && newProduct.StockQuantity >= 0)
         {
-            var content = new StringContent(
-                System.Text.Json.JsonSerializer.Serialize(newProduct),
-                System.Text.Encoding.UTF8,
-                "application/json");
-            var response = await http.PostAsync("/products", content);
-            newProduct = new Product() { };
-        
-            if (!response.IsSuccessStatusCode)
+            if (string.IsNullOrWhiteSpace(newProduct.Image))
             {
-                // Handle error (e.g., logging or throwing an exception)
-                throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+                newProduct.Image = "default-placeholder-image.jpg"; // Default image if none is provided
+            }
+
+            try
+            {
+                // Send the new product request to the backend
+                var response = await http.PostAsJsonAsync("/products", newProduct);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Refresh the product list after adding the new product
+                    products = await http.GetFromJsonAsync<List<Product>>("/products");
+                    newProduct = new Product(); // Clear the form
+                }
+                else
+                {
+                    Console.WriteLine($"Error adding product: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception while adding product: {ex.Message}");
             }
         }
     }
+
+
+
 
     private void ToggleExpandbutton(int id)
     {
@@ -194,20 +218,51 @@
 
     private async Task UpdateProductAsync(Product product)
     {
-        var content = new StringContent(
-            System.Text.Json.JsonSerializer.Serialize(product),
-            System.Text.Encoding.UTF8,
-    "application/json");
-        
-        var response = await http.PutAsync($"/products", content);
-        
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            // Handle error (e.g., logging or throwing an exception)
-            throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+            var response = await http.PutAsJsonAsync($"/products/{product.Id}", product);
+            if (response.IsSuccessStatusCode)
+            {
+                products = await http.GetFromJsonAsync<List<Product>>("/products");
+            }
+            else
+            {
+                Console.WriteLine($"Error updating product: {response.ReasonPhrase}");
+            }
         }
-
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception while updating product: {ex.Message}");
+        }
     }
+
+    private async Task RemoveProductAsync(int productId)
+    {
+        // Show a confirmation dialog
+        var confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil fjerne dette produkt?");
+        if (confirmed)
+        {
+            try
+            {
+                var response = await http.DeleteAsync($"/products/{productId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    // Remove the product locally to avoid another fetch
+                    products.Remove(products.First(p => p.Id == productId));
+                    StateHasChanged();
+                }
+                else
+                {
+                    Console.WriteLine($"Error removing product: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception while removing product: {ex.Message}");
+            }
+        }
+    }
+
 
     public class Product
     {

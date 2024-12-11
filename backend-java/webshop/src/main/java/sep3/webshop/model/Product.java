@@ -12,6 +12,7 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = true) // Allow null values
     private String image;
 
     @Column(nullable = false)
@@ -20,9 +21,8 @@ public class Product {
     @Column(nullable = false)
     private Integer stockQuantity;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String description;
-
 
 
 

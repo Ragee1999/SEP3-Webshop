@@ -1,7 +1,7 @@
 package sep3.webshop.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class ContactMessage {
@@ -19,9 +19,39 @@ public class ContactMessage {
     @Column(nullable = false)
     private String message;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdate = LocalDateTime.now();
+    @Column(name = "is_answered", nullable = false)
+    private boolean isAnswered = false;
 
+    @Column(name = "created_at", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt = new Date();
+
+    @Column(nullable = true)
+    private String reply;
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isAnswered() {
+        return isAnswered;
+    }
+
+    public void setIsAnswered(boolean isAnswered) {
+        this.isAnswered = isAnswered;
+    }
 
     public Long getId() {
         return id;
@@ -55,11 +85,4 @@ public class ContactMessage {
         this.message = message;
     }
 
-    public LocalDateTime getCreatedate() {
-        return createdate;
-    }
-
-    public void setCreatedate(LocalDateTime createdate) {
-        this.createdate = createdate;
-    }
 }

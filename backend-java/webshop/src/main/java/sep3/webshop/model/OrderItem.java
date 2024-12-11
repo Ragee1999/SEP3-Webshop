@@ -1,5 +1,6 @@
 package sep3.webshop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,8 +10,10 @@ public class OrderItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // In OrderItem.java
   @ManyToOne
   @JoinColumn(name = "orderId", nullable = false)
+  @JsonBackReference // Prevents recursion by skipping serialization of the parent
   private CustomerOrder customerOrder;
 
   @ManyToOne
@@ -19,6 +22,8 @@ public class OrderItem {
 
   @Column(nullable = false)
   private int quantity;
+
+
 
   public Long getId() {
     return id;

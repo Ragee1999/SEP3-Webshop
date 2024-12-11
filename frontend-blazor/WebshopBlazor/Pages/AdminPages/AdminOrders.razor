@@ -2,10 +2,10 @@
 
 <style>
     body {
-        background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa;
     }
     .sidebar {
-        background-color: #343a40; /* Dark gray background */
+        background-color: #343a40;
         color: #fff;
         min-height: 100vh;
         padding-top: 20px;
@@ -40,25 +40,9 @@
         margin-bottom: 10px;
         font-size: 22px;
     }
-
-    .stats {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 20px;
-    }
-
-    .stat-box {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        text-align: center;
-    }
-
     .order-item {
         margin-bottom: 15px;
     }
-
     .order-header {
         width: 100%;
         text-align: left;
@@ -67,7 +51,6 @@
         border: 1px solid #ddd;
         cursor: pointer;
     }
-
     .order-details {
         padding: 10px;
         border-left: 2px solid #007bff;
@@ -80,75 +63,66 @@
         <!-- Sidebar -->
         <nav class="col-md-2 sidebar">
             <div class="text-center fs-4 py-2 border-bottom">Admin Dashboard</div>
-            <a href="admin/dashboard"><i class="bi bi-cart"></i> Dashboard</a>
-            <a href="admin/orders"><i class="bi bi-cart"></i> Orders</a>
-            <a href="admin/products"><i class="bi bi-box"></i> Products</a>
-            <a href="admin/customers"><i class="bi bi-people"></i> Customers</a>
-            <a href="admin/messages"><i class="bi bi-envelope"></i> Messages</a>
-            <a href="admin/reviews"><i class="bi bi-star"></i> Reviews</a>
+            <a href="/admin/dashboard"><i class="bi bi-cart"></i> Dashboard</a>
+            <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+            <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
+            <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
+            <a href="/admin/messages"><i class="bi bi-envelope"></i> Messages</a>
+            <a href="/admin/reviews"><i class="bi bi-star"></i> Reviews</a>
         </nav>
 
         <!-- Main Content -->
         <main class="col-md-10">
             <div class="dashboard-header">Orders Overview</div>
             <div class="row g-4 px-4 my-5">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="icon"><i class="bi bi-currency-dollar"></i></div>
-                    <h5>Total Orders</h5>
-                    <p>@totalOrders</p>
+                <div class="col-md-4">
+                    <div class="card">
+                        <h5>Total Orders</h5>
+                        <p>@totalOrders</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="icon"><i class="bi bi-clock"></i></div>
-                    <h5>Orders this month</h5>
-                    <p>@ordersThisMonth</p>
+                <div class="col-md-4">
+                    <div class="card">
+                        <h5>Orders This Month</h5>
+                        <p>@ordersThisMonth</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="icon"><i class="bi bi-cart4"></i></div>
-                    <h5>Orders Last month</h5>
-                    <p>@ordersLastMonth</p>
+                <div class="col-md-4">
+                    <div class="card">
+                        <h5>Orders Last Month</h5>
+                        <p>@ordersLastMonth</p>
+                    </div>
                 </div>
-            </div>
             </div>
 
-            
+            <!-- Order List -->
             <div class="order-list">
                 @foreach (var order in orders)
                 {
-                    <div class="order-item">
-                        <button class="order-header" @onclick="() => ToggleOrderDetails(order.Id)">
-                            Ordre ID: @order.Id - Total: @order.TotalPrice.ToString("C")
-                        </button>
-                        @if (ExpandedOrders.Contains(order.Id))
-                        {
-                            <div class="order-details">
-                                <p><strong>Kunde:</strong></p>
-                                <p><strong>Addresse:</strong></p>
-                                <h5>Produkter:</h5>
-                                <ul>
-                                    @foreach (var product in getProductsinOrder(order.Id))
-                                    {
-                                        <li>@product.name - @product.quantity x $@product.price</li>
-                                    }
-                                </ul>
-                                
-                                @if (order.Status.Equals("waiting"))
-                                {
-                                <button @onclick="() => MarkAsShipped(order.Id)">
-                                    mark as shipped
-                                </button>
-                                <button @onclick="() => MarkAsCancelled(order.Id)">
-                                    cancel order
-                                </button> 
-                                }
-                                
-                            </div>
-                        }
+                <div class="order-item">
+                    <button class="order-header" @onclick="() => ToggleOrderDetails(order.Id)">
+                        Order ID: @order.Id - Total: @order.TotalPrice.ToString("C") - Status: @order.Status
+                    </button>
+                    @if (expandedOrders.Contains(order.Id))
+                    {
+                    <div class="order-details">
+                        <p><strong>Customer ID:</strong> @order.CustomerId</p>
+                        <p><strong>Address ID:</strong> @order.AddressId</p>
+                        <p><strong>Total Quantity:</strong> @order.TotalQuantity</p>
+                        <p><strong>Created At:</strong> @order.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</p>
+
+                        <h5>Order Items:</h5>
+                        <ul>
+                            @foreach (var item in order.OrderItems)
+                            {
+                            <li>@item.Quantity x @item.Product.Price.ToString("C") - @item.Product.Name</li>
+                            }
+                        </ul>
+                        <button class="btn btn-primary" @onclick="() => UpdateOrderStatus(order.Id, ShippedStatus)">Mark as Shipped</button>
+                        <button class="btn btn-danger" @onclick="() => UpdateOrderStatus(order.Id, CancelledStatus)">Cancel Order</button>
                     </div>
+                    }
+                </div>
                 }
             </div>
         </main>
@@ -156,139 +130,71 @@
 </div>
 
 @code {
-    private HttpClient http;
-    private List<long> ExpandedOrders = new List<long>();
+    private HttpClient http = new HttpClient();
     private List<Order> orders = new List<Order>();
-    private List<Product> products = new List<Product>();
-    private List<OrderItem> orderitems = new List<OrderItem>();
-    private List<Address> addresses = new List<Address>();
+    private List<long> expandedOrders = new List<long>();
     private int totalOrders;
     private int ordersThisMonth;
     private int ordersLastMonth;
-
+    private const string ShippedStatus = "shipped";
+    private const string CancelledStatus = "cancelled";
+    
     protected override async Task OnInitializedAsync()
     {
-        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+        http.BaseAddress = new Uri("http://localhost:8080");
         orders = await http.GetFromJsonAsync<List<Order>>("/orders");
-        products = await http.GetFromJsonAsync<List<Product>>("/products");
-        orderitems = await http.GetFromJsonAsync<List<OrderItem>>("/order-items");
-        
-        
         totalOrders = orders.Count;
-        ordersThisMonth = orders.Count(o => o.Date.Month == DateTime.Now.Month);
-        ordersLastMonth = orders.Count(o => o.Date.Month == DateTime.Now.AddMonths(-1).Month);
+        ordersThisMonth = orders.Count(o => o.CreatedAt.Month == DateTime.Now.Month);
+        ordersLastMonth = orders.Count(o => o.CreatedAt.Month == DateTime.Now.AddMonths(-1).Month);
     }
 
-    //Function for extending order details
-    private void ToggleOrderDetails(int orderId)
+    private void ToggleOrderDetails(long orderId)
     {
-        if (ExpandedOrders.Contains(orderId))
+        if (expandedOrders.Contains(orderId))
         {
-            ExpandedOrders.Remove(orderId);
+            expandedOrders.Remove(orderId);
         }
         else
         {
-            ExpandedOrders.Add(orderId);
+            expandedOrders.Add(orderId);
         }
     }
-    
-    private async void MarkAsShipped(int orderId)
+
+    private async Task UpdateOrderStatus(long orderId, string status)
     {
-        orders[orderId].Status = "shipped";
-
-        var content = new StringContent(
-        System.Text.Json.JsonSerializer.Serialize(orders[orderId]),
-        System.Text.Encoding.UTF8,
-        "application/json");
-        var response = await http.PostAsync("/orders", content);
-
-        if (!response.IsSuccessStatusCode)
+        var response = await http.PutAsync($"/orders/update-status/{orderId}?status={status}", null);
+        if (response.IsSuccessStatusCode)
         {
-        // Handle error (e.g., logging or throwing an exception)
-        throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+            var order = orders.First(o => o.Id == orderId);
+            order.Status = status;
+        }
+        else
+        {
+            Console.WriteLine($"Error updating order status: {response.ReasonPhrase}");
         }
     }
 
-    private async void MarkAsCancelled(int orderId)
-    {
-        orders[orderId].Status = "cancelled";
-
-        var content = new StringContent(
-        System.Text.Json.JsonSerializer.Serialize(orders[orderId]),
-        System.Text.Encoding.UTF8,
-        "application/json");
-        var response = await http.PostAsync("/orders", content);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            // Handle error (e.g., logging or throwing an exception)
-            throw new Exception($"Failed to update product: {response.ReasonPhrase}");
-        }
-    }
-
-    
-    //Get a list of orderitems based on order id
-    private List<ProductInOrder> getProductsinOrder(long orderId)
-    {
-        List<ProductInOrder> result = new List<ProductInOrder>();
-        foreach (var oi in orderitems)
-        {
-            if (oi.OrderId == orderId)
-            {
-                result.Add(new ProductInOrder()
-                {
-                    name = products[oi.ProductId].Name,
-                    price = products[oi.ProductId].Price,
-                    quantity = oi.Quantity 
-                });
-            }
-        }
-
-        return result;
-    }
-    
     public class Order
     {
-        public int Id { get; set; }
-        public int CustomerId { get; set; }
-        public int AddressId { get; set; }
+        public long Id { get; set; }
+        public long CustomerId { get; set; }
+        public long AddressId { get; set; }
         public string Status { get; set; }
-        public int totalQuantity { get; set; }
+        public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    }
+
+    public class OrderItem
+    {
+        public int Quantity { get; set; }
+        public Product Product { get; set; } = new Product();
     }
 
     public class Product
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public string Image { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public int StockQuantity { get; set; }
-    }
-    
-    public class OrderItem
-    {
-        public int Id { get; set; }
-        public int OrderId { get; set; }
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-    }
-
-    public class ProductInOrder
-    {
-        public string name { get; set; }
-        public decimal price { get; set; }
-        public int quantity { get; set; }
-    }
-    
-    public class Address
-    {
-        public int Id { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
-        public string Street { get; set; }
     }
 }

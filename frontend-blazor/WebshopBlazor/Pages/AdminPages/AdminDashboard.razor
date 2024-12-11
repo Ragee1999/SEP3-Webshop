@@ -73,35 +73,35 @@
                     <div class="card">
                         <div class="icon"></div>
                         <h5>Total Revenue</h5>
-                        <p>$@calculateTotalRevenue()</p>
+                        <p>@totalRevenue.ToString("N2") kr</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"></div>
                         <h5>Waiting Orders</h5>
-                        <p>@waitingOrders()</p>
+                        <p>@waitingOrdersCount</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"></div>
-                        <h5>Total Orders</h5>
-                        <p>@Orders.Count</p>
+                        <h5>Completed Orders</h5>
+                        <p>@completedOrdersCount</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"></div>
                         <h5>Waiting Messages</h5>
-                        <p>@waitingMessages()</p>
+                        <p>@waitingMessagesCount</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"></div>
                         <h5>Products Sold Out</h5>
-                        <p>@NumberOfSoldOutProducts()</p>
+                        <p>@soldOutProductsCount</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -119,114 +119,39 @@
 @code {
     private bool isAdminLoggedIn = false;
     private HttpClient http;
-    private List<Product> Products = new List<Product>();
-    private List<Order> Orders = new List<Order>();
-    private List<ContactMessage> Messages = new List<ContactMessage>();
+    private decimal totalRevenue;
+    private long waitingOrdersCount;
+    private long completedOrdersCount;
+    private long waitingMessagesCount;
+    private long soldOutProductsCount;
 
-    // Check login status in localStorage when the page is initialized
-    protected override async Task OnInitializedAsync()
-    {
-        isAdminLoggedIn = await localStorage.GetItemAsync<bool>("isAdminLoggedIn");
-
-        // Redirect to login if not logged in
-        if (!isAdminLoggedIn)
-        {
-            NavigateToLoginPage();
-        }
-        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-        Products = await http.GetFromJsonAsync<List<Product>>("/products");
-        Orders = await http.GetFromJsonAsync<List<Order>>("/orders");
-        Messages = await http.GetFromJsonAsync<List<ContactMessage>>("/api/contact");
-
-
-    }
-
-    // Redirect to the login page
     private void NavigateToLoginPage()
     {
         NavigationManager.NavigateTo("/admin");
     }
 
-    private decimal calculateTotalRevenue()
+    protected override async Task OnInitializedAsync()
     {
-        decimal revenue = 0;
-        foreach (var o in Orders)
+        isAdminLoggedIn = await localStorage.GetItemAsync<bool>("isAdminLoggedIn");
+
+        if (!isAdminLoggedIn)
         {
-            revenue += o.TotalPrice;
+            NavigateToLoginPage();
         }
 
-        return revenue;
-    }
+        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
 
-    private int waitingMessages()
-    {
-        int n = 0;
-        foreach (var m in Messages)
+        try
         {
-            if (!m.IsAnswered)
-            {
-                n++;
-            }
+            totalRevenue = await http.GetFromJsonAsync<decimal>("/api/dashboard/total-revenue");
+            waitingOrdersCount = await http.GetFromJsonAsync<long>("/api/dashboard/waiting-orders");
+            completedOrdersCount = await http.GetFromJsonAsync<long>("/api/dashboard/completed-orders");
+            waitingMessagesCount = await http.GetFromJsonAsync<long>("/api/dashboard/waiting-messages");
+            soldOutProductsCount = await http.GetFromJsonAsync<long>("/api/dashboard/sold-out-products");
         }
-
-        return n;
-    }
-
-    private int waitingOrders()
-    {
-        int n = 0;
-        foreach (var o in Orders)
+        catch (Exception ex)
         {
-            if (o.Status.Equals("waiting"))
-            {
-                n++;
-            }
+            Console.WriteLine($"Error fetching dashboard data: {ex.Message}");
         }
-
-        return n;
-    }
-    private int NumberOfSoldOutProducts()
-    {
-        int n = 0;
-        foreach (var p in Products)
-        {
-            if (p.StockQuantity == 0)
-            {
-                n++;
-            }
-        }
-        
-        return n;
-        }
-    
-    public class Product
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public double Price { get; set; }
-        public string Description { get; set; }
-        public int StockQuantity { get; set; }
-    }
-
-    public class Order
-    {
-        public int Id { get; set; }
-        public int CustomerId { get; set; }
-        public int AddressId { get; set; }
-        public string Status { get; set; }
-        public int totalQuantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public DateTime Date { get; set; }
-    }
-
-    public class ContactMessage
-    { 
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public bool IsAnswered { get; set; }
-        public DateOnly CreatedAt { get; set; }
     }
 }
-

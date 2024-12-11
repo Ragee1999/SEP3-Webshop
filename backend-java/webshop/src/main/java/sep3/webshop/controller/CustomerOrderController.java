@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sep3.webshop.model.CustomerOrder;
 import sep3.webshop.service.CustomerOrderService;
-
+import sep3.webshop.service.OrderItemService;
 import java.util.List;
 
 @RestController
@@ -12,9 +12,11 @@ import java.util.List;
 public class CustomerOrderController {
 
     private final CustomerOrderService customerOrderService;
+    private final OrderItemService orderItemService;
 
-    public CustomerOrderController(CustomerOrderService customerOrderService) {
+    public CustomerOrderController(CustomerOrderService customerOrderService, OrderItemService orderItemService) {
         this.customerOrderService = customerOrderService;
+        this.orderItemService = orderItemService;
     }
 
     @PostMapping("/add")
@@ -30,8 +32,8 @@ public class CustomerOrderController {
         return ResponseEntity.ok(customerOrderService.getAllOrdersByCustomer(customerId));
     }
 
-    @GetMapping public ResponseEntity<List<CustomerOrder>> getAllOrders()
-    {
+    @GetMapping
+    public ResponseEntity<List<CustomerOrder>> getAllOrders() {
         return ResponseEntity.ok(customerOrderService.getAllOrders());
     }
 
@@ -45,5 +47,16 @@ public class CustomerOrderController {
     public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId) {
         customerOrderService.cancelOrder(orderId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerOrder> getOrderDetails(@PathVariable Long id) {
+        return ResponseEntity.ok(customerOrderService.getOrderById(id));
+    }
+
+    @PutMapping("/update-status/{orderId}")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
+        customerOrderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok().build();
     }
 }

@@ -92,27 +92,27 @@
 
         <!-- Main Content -->
         <main class="col-md-10">
-            <div class="dashboard-header">Orders Overview</div>
+            <div class="dashboard-header">Messages Overview</div>
             <div class="row g-4 px-4 my-5">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"><i class="bi bi-currency-dollar"></i></div>
-                        <h5>Waiting messages</h5>
-                        <p></p>
+                        <h5>Waiting Messages</h5>
+                        <p>@waitingMessages</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"><i class="bi bi-clock"></i></div>
                         <h5>Total Messages</h5>
-                        <p></p>
+                        <p>@totalMessages</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="icon"><i class="bi bi-cart4"></i></div>
-                        <h5>Messages this month</h5>
-                        <p></p>
+                        <h5>Messages This Month</h5>
+                        <p>@messagesThisMonth</p>
                     </div>
                 </div>
             </div>
@@ -121,23 +121,25 @@
                 {
                     <div class="order-item">
                         <button class="order-header" @onclick="() => ToggleOrderDetails(message.Id)">
-                            Name: @message.Name : date: @message.CreatedAt
+                            Name: @message.Name : Date: @message.CreatedAt.ToString("dd.MM.yyyy")
                         </button>
                         @if (ExpandedOrders.Contains(message.Id))
                         {
                             <div class="message-details">
                                 <p><strong>Name: @message.Name</strong></p>
-                                <p><strong>Mail: @message.Email</strong></p>
-                                <p>besked: @message.message</p>
-                                <p>dato: @message.CreatedAt</p>
-                                
+                                <p><strong>Email: @message.Email</strong></p>
+                                <p>Message: @message.Message</p>
+                                <p>Date: @message.CreatedAt.ToString("dd.MM.yyyy")</p>
+
                                 @if (!message.IsAnswered)
                                 {
-                                    <a class="btn btn-primary" href="mailo:@message.Email" @onclick="() => MarkAsAnswered(message.Id)">
-                                        besvar
-                                    </a>
+                                    <textarea @bind="replyText" placeholder="Type your reply..."></textarea>
+                                    <button class="btn btn-primary mt-2" @onclick="() => AddReply(message.Id)">Send Reply</button>
                                 }
-                                
+                                @if (!string.IsNullOrEmpty(message.Reply))
+                                {
+                                    <p><strong>Reply:</strong> @message.Reply</p>
+                                }
                             </div>
                         }
                     </div>
@@ -150,10 +152,14 @@
 @code
 {
     private List<int> ExpandedOrders = new List<int>();
-    HttpClient http = new HttpClient();
+    private HttpClient http = new HttpClient();
     private bool isAdminLoggedIn = false;
     private List<ContactMessage> messages = new List<ContactMessage>();
-    
+    private int waitingMessages = 0;
+    private int totalMessages = 0;
+    private int messagesThisMonth = 0;
+    private string replyText = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         isAdminLoggedIn = await localStorage.GetItemAsync<bool>("isAdminLoggedIn");
@@ -163,39 +169,53 @@
         {
             NavigateToLoginPage();
         }
-        
+
         http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
         messages = await http.GetFromJsonAsync<List<ContactMessage>>("/api/contact");
 
-
+        // Fetch statistics
+        var stats = await http.GetFromJsonAsync<Dictionary<string, int>>("/api/contact/stats");
+        waitingMessages = stats["waitingMessages"];
+        totalMessages = stats["totalMessages"];
+        messagesThisMonth = stats["messagesThisMonth"];
     }
-    
+
     // Redirect to the login page
     private void NavigateToLoginPage()
     {
         NavigationManager.NavigateTo("/admin");
     }
-    
-    private async void MarkAsAnswered(int Id)
-    {
-        messages[Id].IsAnswered = true;
 
-        var content = new StringContent(
-        System.Text.Json.JsonSerializer.Serialize(messages[Id]),
-        System.Text.Encoding.UTF8,
-        "application/json");
-        var response = await http.PostAsync("/api/contact", content);
-
-    if (!response.IsSuccessStatusCode)
+    private async Task MarkAsAnswered(int messageId)
     {
-    // Handle error (e.g., logging or throwing an exception)
-    throw new Exception($"Failed to update product: {response.ReasonPhrase}");
+        var response = await http.PostAsync($"/api/contact/mark-as-answered/{messageId}", null);
+        if (response.IsSuccessStatusCode)
+        {
+            var message = messages.First(m => m.Id == messageId);
+            message.IsAnswered = true;
+        }
+        else
+        {
+            Console.WriteLine($"Error marking message as answered: {response.ReasonPhrase}");
+        }
     }
-        
+
+    private async Task AddReply(int messageId)
+    {
+        var response = await http.PostAsJsonAsync($"/api/contact/reply/{messageId}", replyText);
+        if (response.IsSuccessStatusCode)
+        {
+            var updatedMessage = await response.Content.ReadFromJsonAsync<ContactMessage>();
+            var message = messages.First(m => m.Id == messageId);
+            message.Reply = updatedMessage.Reply;
+            replyText = string.Empty;
+        }
+        else
+        {
+            Console.WriteLine($"Error sending reply: {response.ReasonPhrase}");
+        }
     }
-        
-    
-    //Function for extending message details
+
     private void ToggleOrderDetails(int messageId)
     {
         if (ExpandedOrders.Contains(messageId))
@@ -207,15 +227,15 @@
             ExpandedOrders.Add(messageId);
         }
     }
-    
-    
+
     public class ContactMessage
-    { 
+    {
         public int Id { get; set; }
         public string Email { get; set; }
-        public string message { get; set; }
+        public string Message { get; set; }
         public string Name { get; set; }
         public bool IsAnswered { get; set; }
-        public DateOnly CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string Reply { get; set; }
     }
 }

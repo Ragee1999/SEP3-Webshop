@@ -27,10 +27,14 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
-    @Override
     public Product addProduct(Product product) {
+        if (product.getId() != null && product.getId() != 0) {
+            throw new IllegalStateException("New product must not have an ID.");
+        }
+        product.setId(null); // Hibernate requires the ID to be null for new entities
         return productRepository.save(product);
     }
+
 
     @Override
     public Product updateProduct(Long id, Product product) {

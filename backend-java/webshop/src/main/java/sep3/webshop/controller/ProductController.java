@@ -31,9 +31,11 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product newProduct = productService.addProduct(product);
-        return ResponseEntity.ok(newProduct);
+        System.out.println("Incoming Product: " + product);
+        Product savedProduct = productService.addProduct(product);
+        return ResponseEntity.ok(savedProduct);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
@@ -52,4 +54,5 @@ public class ProductController {
         productService.reduceStock(id, quantity);
         return ResponseEntity.noContent().build();
     }
+
 }

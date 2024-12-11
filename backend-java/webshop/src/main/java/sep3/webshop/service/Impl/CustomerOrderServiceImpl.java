@@ -9,6 +9,8 @@ import sep3.webshop.repository.CustomerOrderRepository;
 import sep3.webshop.repository.ProductRepository;
 import sep3.webshop.service.CustomerOrderService;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,15 +34,16 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
             throw new IllegalStateException("Not enough stock for product ID: " + productId);
         }
 
-        // Find active order or create a new one
+        // Fetch active order or create new
         CustomerOrder order = customerOrderRepository.findActiveOrderByCustomerId(customerId)
                 .orElseGet(() -> {
                     CustomerOrder newOrder = new CustomerOrder();
                     newOrder.setCustomer(new Customer()); // Replace with actual customer retrieval
+                    newOrder.setStatus("waiting"); // Default status
                     return newOrder;
                 });
 
-        // Check if product is already in the order
+        // Add or update order item
         Optional<OrderItem> existingItem = order.getOrderItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst();
@@ -67,14 +70,13 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     }
 
     @Override
-    public List<CustomerOrder> getAllOrders()
-    {
+    public List<CustomerOrder> getAllOrders() {
         return customerOrderRepository.findAll();
     }
 
     @Override
     public CustomerOrder getOrderById(Long orderId) {
-        return customerOrderRepository.findById(orderId)
+        return customerOrderRepository.findOrderWithDetails(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
     }
 
@@ -97,5 +99,18 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         }
         customerOrderRepository.delete(order);
     }
-}
 
+    public int countOrdersThisMonth() {
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        return (int) customerOrderRepository.findAll().stream()
+                .filter(order -> order.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAfter(startOfMonth))
+                .count();
+    }
+
+    public void updateOrderStatus(Long orderId, String status) {
+        CustomerOrder order = customerOrderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(status);
+        customerOrderRepository.save(order);
+    }
+}

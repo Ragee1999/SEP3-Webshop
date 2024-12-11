@@ -17,4 +17,8 @@ public interface CustomerOrderService {
     void checkoutOrder(Long orderId);
 
     void cancelOrder(Long orderId);
+
+    int countOrdersThisMonth();
+
+    void updateOrderStatus(Long orderId, String status);
 }
