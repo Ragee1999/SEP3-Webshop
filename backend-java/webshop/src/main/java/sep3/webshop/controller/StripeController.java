@@ -20,7 +20,7 @@ public class StripeController {
   // Constructor to set your Stripe secret key
   public StripeController() {
     // Set your Stripe secret key
-    Stripe.apiKey = "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"; // Replace with your actual Stripe secret key
+    Stripe.apiKey = "sk_test_51QSbQTFzrlRAcoaO3Q9F6m6WjSlp3g9k54n5AeHPrNBTxWIKPgY5NUaixlKAq208LklRJQAnCLzNwoVM3XVnSUXp00E9Nwdsgg"; // Replace with your actual Stripe secret key
   }
 
   @PostMapping("/create-checkout-session")
