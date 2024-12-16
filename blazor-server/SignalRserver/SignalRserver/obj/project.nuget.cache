@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZpyiqcCICqa2mKO//qr9VMwcUv0IJxOyzoxAJIhX8ZvDqUpkU8nPUBJIm90FnDCGcVP8VIfdctEAUm0FsYAIbA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Rageevan\\Desktop\\SEP3-Webshop\\blazor-server\\SignalRserver\\SignalRserver\\SignalRserver.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Rageevan\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\stripe.net\\47.2.0-beta.3\\stripe.net.47.2.0-beta.3.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.0\\system.configuration.configurationmanager.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.security.accesscontrol\\6.0.0\\system.security.accesscontrol.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.security.cryptography.protecteddata\\6.0.0\\system.security.cryptography.protecteddata.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.security.permissions\\6.0.0\\system.security.permissions.6.0.0.nupkg.sha512",
+    "C:\\Users\\Rageevan\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
