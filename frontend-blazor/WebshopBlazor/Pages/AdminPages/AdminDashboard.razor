@@ -1,20 +1,21 @@
 @page "/admin/dashboard"
-@using Blazored.LocalStorage
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService localStorage
-
-<h3>Admin Dashboard</h3>
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@using Microsoft.AspNetCore.SignalR.Client
 
 <style>
     body {
         background-color: #f8f9fa; /* Light gray background */
     }
+
     .sidebar {
         background-color: #343a40; /* Dark gray background */
         color: #fff;
         min-height: 100vh;
         padding-top: 20px;
     }
+
     .sidebar a {
         color: #ddd;
         text-decoration: none;
@@ -22,16 +23,19 @@
         padding: 10px 20px;
         font-size: 16px;
     }
+
     .sidebar a:hover {
         background-color: #495057;
         color: #fff;
     }
+
     .dashboard-header {
         font-size: 26px;
         margin: 20px 0;
         text-align: center;
         color: #343a40;
     }
+
     .card {
         border: none;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -41,117 +45,125 @@
         font-weight: bold;
         background-color: #fff;
     }
+
     .card h5 {
         margin-bottom: 10px;
         font-size: 22px;
     }
-    .icon {
-        font-size: 30px;
-        color: #6c757d;
-        margin-bottom: 10px;
-    }
 </style>
+
+<h3>Admin Dashboard</h3>
 
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
         <nav class="col-md-2 sidebar">
             <div class="text-center fs-4 py-2 border-bottom">Admin Dashboard</div>
-            <a href="admin/dashboard"><i class="bi bi-cart"></i> Dashboard</a>
-            <a href="admin/orders"><i class="bi bi-cart"></i> Orders</a>
-            <a href="admin/products"><i class="bi bi-box"></i> Products</a>
-            <a href="admin/customers"><i class="bi bi-people"></i> Customers</a>
-            <a href="admin/messages"><i class="bi bi-envelope"></i> Messages</a>
-            <a href="admin/reviews"><i class="bi bi-star"></i> Reviews</a>
+            <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+            <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
+            <a href="/admin/messages"><i class="bi bi-envelope"></i> Messages</a>
         </nav>
 
         <!-- Main Content -->
         <main class="col-md-10">
-            <div class="dashboard-header">Dashboard Overview</div>
-            <div class="row g-4 px-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Total Revenue</h5>
-                        <p>@totalRevenue.ToString("N2") kr</p>
+            @if (!IsLoading)
+            {
+                <div class="dashboard-header">Dashboard Overview</div>
+                <div class="row g-4 px-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <h5>Total Revenue</h5>
+                            <p>@TotalRevenue.ToString("N2") kr</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <h5>Completed Orders</h5>
+                            <p>@CompletedOrdersCount</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <h5>Messages</h5>
+                            <p>@MessagesCount</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Waiting Orders</h5>
-                        <p>@waitingOrdersCount</p>
+            }
+            else
+            {
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
+                    <p>Loading dashboard data...</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Completed Orders</h5>
-                        <p>@completedOrdersCount</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Waiting Messages</h5>
-                        <p>@waitingMessagesCount</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Products Sold Out</h5>
-                        <p>@soldOutProductsCount</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="icon"></div>
-                        <h5>Avg. Review</h5>
-                        <p>Coming soon...</p>
-                    </div>
-                </div>
-            </div>
+            }
         </main>
     </div>
 </div>
 
 @code {
+    private double TotalRevenue = 0.0;
+    private int CompletedOrdersCount = 0;
+    private int MessagesCount = 0;
+    private HubConnection? hubConnection;
+    private bool IsLoading = true;
     private bool isAdminLoggedIn = false;
-    private HttpClient http;
-    private decimal totalRevenue;
-    private long waitingOrdersCount;
-    private long completedOrdersCount;
-    private long waitingMessagesCount;
-    private long soldOutProductsCount;
-
-    private void NavigateToLoginPage()
-    {
-        NavigationManager.NavigateTo("/admin");
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        isAdminLoggedIn = await localStorage.GetItemAsync<bool>("isAdminLoggedIn");
+        isAdminLoggedIn = await LocalStorage.GetItemAsync<bool>("isAdminLoggedIn");
 
+        // Redirect to login if not logged in
         if (!isAdminLoggedIn)
         {
-            NavigateToLoginPage();
+            NavigationManager.NavigateTo("/admin");
+            return; // Prevent further execution of the page
         }
-
-        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
 
         try
         {
-            totalRevenue = await http.GetFromJsonAsync<decimal>("/api/dashboard/total-revenue");
-            waitingOrdersCount = await http.GetFromJsonAsync<long>("/api/dashboard/waiting-orders");
-            completedOrdersCount = await http.GetFromJsonAsync<long>("/api/dashboard/completed-orders");
-            waitingMessagesCount = await http.GetFromJsonAsync<long>("/api/dashboard/waiting-messages");
-            soldOutProductsCount = await http.GetFromJsonAsync<long>("/api/dashboard/sold-out-products");
+            // Start the SignalR connection
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7237/paymenthub")
+                .WithAutomaticReconnect()
+                .Build();
+
+            hubConnection.On<List<PaymentDetails>>("ReceivePaymentDetails", (payments) =>
+            {
+                TotalRevenue = payments.Sum(p => p.AmountPaid);
+                CompletedOrdersCount = payments.Count;
+                IsLoading = false; // Data loaded and hide loading spinner
+                InvokeAsync(StateHasChanged);
+            });
+
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("FetchStripeData");
+
+            // Fetch messages count
+            var response = await Http.GetAsync("http://localhost:8080/api/contact/stats");
+            if (response.IsSuccessStatusCode)
+            {
+                var stats = await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
+                MessagesCount = stats.GetValueOrDefault("totalMessages", 0);
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error fetching dashboard data: {ex.Message}");
+            Console.WriteLine($"Error loading dashboard: {ex.Message}");
         }
+        finally
+        {
+            IsLoading = false; // Ensure spinner is hidden even on errors
+            StateHasChanged();
+        }
+    }
+
+    private class PaymentDetails
+    {
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public double AmountPaid { get; set; }
     }
 }

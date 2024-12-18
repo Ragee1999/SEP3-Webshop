@@ -1,0 +1,157 @@
+﻿@page "/payment-success"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<h3>Payment Confirmation</h3>
+
+@if (paymentDetails != null)
+{
+    <ul>
+        <li><strong>Email:</strong> @paymentDetails.Email</li>
+        <li><strong>Amount Paid:</strong> @paymentDetails.AmountPaid @paymentDetails.Currency</li>
+        <li><strong>Status:</strong> @paymentDetails.Status</li>
+    </ul>
+}
+else if (isFallback)
+{
+    <p>Unable to retrieve payment confirmation, but stock is being updated...</p>
+}
+else
+{
+    <p>@message</p>
+}
+
+@if (isStockUpdating)
+{
+    <p>Updating stock, please wait...</p>
+}
+
+@code {
+    private HubConnection? hubConnection;
+    private string message = "Waiting for payment confirmation...";
+    private PaymentDetails? paymentDetails = null;
+    private string sessionId;
+    private bool isStockUpdating = false;
+    private bool isFallback = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        if (!string.IsNullOrEmpty(queryParams["session_id"]))
+        {
+            sessionId = queryParams["session_id"];
+            await PreloadStockUpdate();
+            await StartSignalRConnection(TimeSpan.FromSeconds(10)); // 10 seconds timeout
+        }
+        else
+        {
+            message = "Session ID is missing.";
+        }
+    }
+
+    private async Task StartSignalRConnection(TimeSpan timeout)
+    {
+        try
+        {
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7237/paymenthub")
+                .Build();
+
+            hubConnection.On<string, string, double, string, string>("ReceivePaymentDetails", async (receivedSessionId, customerEmail, amountPaid, currency, status) =>
+            {
+                if (receivedSessionId == sessionId)
+                {
+                    paymentDetails = new PaymentDetails
+                    {
+                        Email = customerEmail,
+                        AmountPaid = amountPaid,
+                        Currency = currency,
+                        Status = status
+                    };
+
+                    // Ensure stock update completes
+                    await UpdateStock();
+                    InvokeAsync(StateHasChanged);
+                }
+            });
+
+            var connectionTask = hubConnection.StartAsync();
+            if (await Task.WhenAny(connectionTask, Task.Delay(timeout)) != connectionTask)
+            {
+                isFallback = true; // Fallback if connection times out
+                await UpdateStock(); // Ensure stock update in fallback mode
+                InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                await connectionTask;
+                await hubConnection.InvokeAsync("NotifyPaymentSuccess", sessionId);
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Error connecting to SignalR: {ex.Message}";
+        }
+    }
+
+    private async Task PreloadStockUpdate()
+    {
+        try
+        {
+            isStockUpdating = true;
+            await UpdateStock();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in preload stock update: {ex.Message}");
+        }
+        finally
+        {
+            isStockUpdating = false;
+        }
+    }
+
+    private async Task UpdateStock()
+    {
+        try
+        {
+            var cartItems = await LocalStorage.GetItemAsync<List<CartItem>>("cartItems");
+
+            if (cartItems != null && cartItems.Count > 0)
+            {
+                var response = await Http.PostAsJsonAsync("/api/stripe/reduce-stock", cartItems);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await LocalStorage.RemoveItemAsync("cartItems"); // Clear cart
+                }
+                else
+                {
+                    Console.WriteLine($"Error reducing stock: {response.ReasonPhrase}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating stock: {ex.Message}");
+        }
+    }
+
+    public class CartItem
+    {
+        public long Id { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    private class PaymentDetails
+    {
+        public string Email { get; set; } = string.Empty;
+        public double AmountPaid { get; set; }
+        public string Currency { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+    }
+}

@@ -1,4 +1,5 @@
 package sep3.webshop.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -12,10 +13,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("http://localhost:5203") // Add our Blazor's frontend URL
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5203", "https://localhost:7237") // Frontend and SignalR server
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*") // Allow all headers
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };

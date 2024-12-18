@@ -1,5 +1,7 @@
 @page "/admin/products"
 @inject IJSRuntime jsRuntime
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <style>
     .add-product-form, .product-details {
@@ -30,15 +32,18 @@
         margin-bottom: 10px;
         padding: 5px;
     }
+
     body {
         background-color: #f8f9fa; /* Light gray background */
     }
+
     .sidebar {
         background-color: #343a40; /* Dark gray background */
         color: #fff;
         min-height: 100vh;
         padding-top: 20px;
     }
+
     .sidebar a {
         color: #ddd;
         text-decoration: none;
@@ -46,19 +51,17 @@
         padding: 10px 20px;
         font-size: 16px;
     }
+
     .sidebar a:hover {
         background-color: #495057;
         color: #fff;
     }
+
     .dashboard-header {
         font-size: 26px;
         margin: 20px 0;
         text-align: center;
         color: #343a40;
-    }
-    .card h5 {
-        margin-bottom: 10px;
-        font-size: 22px;
     }
 </style>
 
@@ -67,77 +70,68 @@
         <!-- Sidebar -->
         <nav class="col-md-2 sidebar">
             <div class="text-center fs-4 py-2 border-bottom">Admin Dashboard</div>
-            <a href="admin/dashboard"><i class="bi bi-cart"></i> Dashboard</a>
-            <a href="admin/orders"><i class="bi bi-cart"></i> Orders</a>
-            <a href="admin/products"><i class="bi bi-box"></i> Products</a>
-            <a href="admin/customers"><i class="bi bi-people"></i> Customers</a>
-            <a href="admin/messages"><i class="bi bi-envelope"></i> Messages</a>
-            <a href="admin/reviews"><i class="bi bi-star"></i> Reviews</a>
+            <a href="/admin/dashboard"><i class="bi bi-house"></i> Dashboard</a>
+            <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+            <a href="/admin/messages"><i class="bi bi-envelope"></i> Messages</a>
         </nav>
 
+        <!-- Main Content -->
         <main class="col-md-10">
-            <div class="dashboard-header">Products Overview</div>
-
-            <!-- Tilføj produkt form -->
-            <h4>Tilføj Produkt</h4>
+            <h4>Add Product</h4>
             <div class="add-product-form">
-                <label>Navn:</label>
+                <label>Name:</label>
                 <input type="text" @bind="newProduct.Name" />
 
-                <label>Beskrivelse:</label>
+                <label>Description:</label>
                 <textarea @bind="newProduct.Description"></textarea>
 
-                <label>Pris:</label>
+                <label>Price:</label>
                 <input type="number" step="0.01" @bind="newProduct.Price" />
 
-                <label>Antal:</label>
+                <label>Stock Quantity:</label>
                 <input type="number" @bind="newProduct.StockQuantity" />
 
-                <label>Billeder:</label>
-                <input type="text" placeholder="Billede URL" bind="@newProduct.Image" />
+                <label>Image URL:</label>
+                <input type="text" placeholder="Image URL" @bind="newProduct.Image" />
 
-                <button @onclick="() => AddProduct()">Tilføj Produkt</button>
+                <button @onclick="() => AddProduct()">Add Product</button>
             </div>
 
-            <hr />
-
-            <!-- Liste af produkter -->
-            <h4>Eksisterende Produkter</h4>
+            <h4>Existing Products</h4>
             <div class="product-list">
                 @foreach (var product in products)
                 {
                 <div class="product-item">
-                    <button class="product-header" @onclick="() => ToggleExpandbutton(product.Id)">
+                    <button class="product-header" @onclick="() => ToggleExpandButton(product.Id)">
                         @product.Name (ID: @product.Id)
                     </button>
-                    @if (expandedproducts.Contains(product.Id))
+                    @if (expandedProducts.Contains(product.Id))
                     {
                     <div class="product-details">
-                        <p><strong>Beskrivelse:</strong> @product.Description</p>
-                        <p><strong>Pris:</strong> @product.Price.ToString("C")</p>
-                        <p><strong>Antal:</strong> @product.StockQuantity</p>
-                        <p><strong>Billede:</strong> @product.Image</p>
+                        <p><strong>Description:</strong> @product.Description</p>
+                        <p><strong>Price:</strong> @product.Price.ToString("C")</p>
+                        <p><strong>Stock Quantity:</strong> @product.StockQuantity</p>
+                        <p><strong>Image:</strong> @product.Image</p>
 
-                        <!-- Redigering af produkt -->
-                        <h5>Rediger Produkt</h5>
-                        <label>Beskrivelse:</label>
+                        <!-- Edit Product -->
+                        <h5>Edit Product</h5>
+                        <label>Description:</label>
                         <textarea @bind="product.Description"></textarea>
 
-                        <label>Pris:</label>
+                        <label>Price:</label>
                         <input type="number" step="0.01" @bind="product.Price" />
 
-                        <label>Antal:</label>
+                        <label>Stock Quantity:</label>
                         <input type="number" @bind="product.StockQuantity" />
 
-                        <label>Billede:</label>
+                        <label>Image URL:</label>
                         <textarea @bind="product.Image"></textarea>
 
                         <!-- Update Button -->
-                        <button class="btn btn-primary mt-2" @onclick="() => UpdateProductAsync(product)">Opdater Produkt</button>
+                        <button class="btn btn-primary mt-2" @onclick="() => UpdateProductAsync(product)">Update Product</button>
 
                         <!-- Remove Button -->
-                        <button class="btn btn-danger mt-2" @onclick="() => RemoveProductAsync(product.Id)">Fjern Produkt</button>
-
+                        <button class="btn btn-danger mt-2" @onclick="() => RemoveProductAsync(product.Id)">Remove Product</button>
                     </div>
                     }
                 </div>
@@ -147,44 +141,46 @@
     </div>
 </div>
 
-
-
-
 @code {
     HttpClient http;
     private List<Product> products = new List<Product>();
-    private List<int> expandedproducts = new List<int>();
-    private Product newProduct = new Product
-    {
-    };
+    private List<int> expandedProducts = new List<int>();
+    private Product newProduct = new Product();
 
     protected override async Task OnInitializedAsync()
     {
-        http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-        products = await http.GetFromJsonAsync<List<Product>>("/products");
+        // Check if the user is logged in
+        var isAdminLoggedIn = await LocalStorage.GetItemAsync<bool>("isAdminLoggedIn");
+        if (!isAdminLoggedIn)
+        {
+            // Redirect to the login page if not authorized
+            NavigationManager.NavigateTo("/admin");
+            return; // Prevent further execution of the page
+        }
+
+        try
+        {
+            http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+            products = await http.GetFromJsonAsync<List<Product>>("/products");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching products: {ex.Message}");
+        }
     }
 
     private async Task AddProduct()
     {
-
-        // Validate the other fields
         if (!string.IsNullOrWhiteSpace(newProduct.Name) && newProduct.Price > 0 && newProduct.StockQuantity >= 0)
         {
-            if (string.IsNullOrWhiteSpace(newProduct.Image))
-            {
-                newProduct.Image = "default-placeholder-image.jpg"; // Default image if none is provided
-            }
-
             try
             {
-                // Send the new product request to the backend
                 var response = await http.PostAsJsonAsync("/products", newProduct);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Refresh the product list after adding the new product
                     products = await http.GetFromJsonAsync<List<Product>>("/products");
-                    newProduct = new Product(); // Clear the form
+                    newProduct = new Product();
                 }
                 else
                 {
@@ -198,23 +194,17 @@
         }
     }
 
-
-
-
-    private void ToggleExpandbutton(int id)
+    private void ToggleExpandButton(int id)
     {
-        if (expandedproducts.Contains(id))
+        if (expandedProducts.Contains(id))
         {
-            expandedproducts.Remove(id);
+            expandedProducts.Remove(id);
         }
         else
         {
-            expandedproducts.Add(id);
+            expandedProducts.Add(id);
         }
     }
-
-   
-    
 
     private async Task UpdateProductAsync(Product product)
     {
@@ -224,22 +214,22 @@
             if (response.IsSuccessStatusCode)
             {
                 products = await http.GetFromJsonAsync<List<Product>>("/products");
+                await jsRuntime.InvokeVoidAsync("alert", "Product updated successfully!"); // Success alert
             }
             else
             {
-                Console.WriteLine($"Error updating product: {response.ReasonPhrase}");
+                await jsRuntime.InvokeVoidAsync("alert", "Failed to update product. Please try again."); // Failure alert
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Exception while updating product: {ex.Message}");
+            await jsRuntime.InvokeVoidAsync("alert", $"An error occurred: {ex.Message}"); // Error alert
         }
     }
 
     private async Task RemoveProductAsync(int productId)
     {
-        // Show a confirmation dialog
-        var confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil fjerne dette produkt?");
+        var confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this product?");
         if (confirmed)
         {
             try
@@ -247,9 +237,7 @@
                 var response = await http.DeleteAsync($"/products/{productId}");
                 if (response.IsSuccessStatusCode)
                 {
-                    // Remove the product locally to avoid another fetch
                     products.Remove(products.First(p => p.Id == productId));
-                    StateHasChanged();
                 }
                 else
                 {
@@ -262,7 +250,6 @@
             }
         }
     }
-
 
     public class Product
     {

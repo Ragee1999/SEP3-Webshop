@@ -15,46 +15,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Rageevan\Desktop\SEP3-Webshop\blazor-server\SignalRserver\SignalRserver
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/App.razor]
-build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/FetchData.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Shared/SurveyPrompt.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Shared/MainLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-l6qtqdqgz9
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Shared/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-4fljpl9w4g
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/_Host.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Rageevan/Desktop/SEP3-Webshop/blazor-server/SignalRserver/SignalRserver/Pages/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
