@@ -1,4 +1,4 @@
-package sep3.webshop.service;
+/* package sep3.webshop.service;
 
 import sep3.webshop.model.CustomerOrder;
 
@@ -22,3 +22,4 @@ public interface CustomerOrderService {
 
     void updateOrderStatus(Long orderId, String status);
 }
+*/

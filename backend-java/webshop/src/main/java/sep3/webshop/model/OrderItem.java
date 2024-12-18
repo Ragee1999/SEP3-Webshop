@@ -1,59 +1,36 @@
 package sep3.webshop.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 
-@Entity
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class OrderItem {
+    private String name;
+    private int quantity;
+    private double price;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
 
-  // In OrderItem.java
-  @ManyToOne
-  @JoinColumn(name = "orderId", nullable = false)
-  @JsonBackReference // Prevents recursion by skipping serialization of the parent
-  private CustomerOrder customerOrder;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  @ManyToOne
-  @JoinColumn(name = "productId", nullable = false)
-  private Product product;
+    public int getQuantity() {
+        return quantity;
+    }
 
-  @Column(nullable = false)
-  private int quantity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
+    public double getPrice() {
+        return price;
+    }
 
-
-  public Long getId() {
-    return id;
-  }
-
-  public CustomerOrder getCustomerOrder() {
-    return customerOrder;
-  }
-
-  public void setCustomerOrder(CustomerOrder customerOrder) {
-    this.customerOrder = customerOrder;
-  }
-
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
-    this.product = product;
-  }
-
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
-
-  public void addQuantity(int quantity) {
-    this.quantity += quantity;
-  }
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

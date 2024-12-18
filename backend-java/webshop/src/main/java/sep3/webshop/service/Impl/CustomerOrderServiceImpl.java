@@ -1,4 +1,4 @@
-package sep3.webshop.service.Impl;
+/*package sep3.webshop.service.Impl;
 
 import org.springframework.stereotype.Service;
 import sep3.webshop.model.Customer;
@@ -13,6 +13,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+
+
+
+//-------------------------
+// Currently commented out because is currently being replaced by the temporary OrderItem (Just a DTO) from stripe dashboard
+//--------------------------
+
 
 @Service
 public class CustomerOrderServiceImpl implements CustomerOrderService {
@@ -83,9 +90,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Override
     public void checkoutOrder(Long orderId) {
         CustomerOrder order = getOrderById(orderId);
-        order.setTotalPrice(order.getOrderItems().stream()
-                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
-                .sum());
+         order.setTotalPrice(order.getOrderItems().stream()
+               .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+              .sum());
         customerOrderRepository.save(order);
     }
 
@@ -93,9 +100,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     public void cancelOrder(Long orderId) {
         CustomerOrder order = getOrderById(orderId);
         for (OrderItem item : order.getOrderItems()) {
-            Product product = item.getProduct();
-            product.setStockQuantity(product.getStockQuantity() + item.getQuantity());
-            productRepository.save(product);
+           Product product = item.getProduct();
+           product.setStockQuantity(product.getStockQuantity() + item.getQuantity());
+           productRepository.save(product);
         }
         customerOrderRepository.delete(order);
     }
@@ -113,4 +120,4 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         order.setStatus(status);
         customerOrderRepository.save(order);
     }
-}
+} */

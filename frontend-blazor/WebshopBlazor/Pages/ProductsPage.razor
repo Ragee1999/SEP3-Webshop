@@ -118,17 +118,21 @@ await LoadProducts();
 
 private async Task LoadProducts()
 {
-try
-{
-var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
-var allProducts = await http.GetFromJsonAsync<List<Product>>("/products");
+    try
+    {
+        var http = new HttpClient { BaseAddress = new Uri("http://localhost:8080") };
+        var allProducts = await http.GetFromJsonAsync<List<Product>>("/products");
 
-products = allProducts?.Where(p => !string.IsNullOrWhiteSpace(p.Image)).ToList() ?? new List<Product>();
-}
-catch (Exception ex)
-{
-Console.WriteLine($"Error fetching products: {ex.Message}");
-}
+        products = allProducts?.Select(p =>
+        {
+            p.Image = string.IsNullOrWhiteSpace(p.Image) ? "default-placeholder-image.jpg" : p.Image;
+            return p;
+        }).ToList() ?? new List<Product>();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error fetching products: {ex.Message}");
+    }
 }
 
 private void NavigateToProduct(long productId)

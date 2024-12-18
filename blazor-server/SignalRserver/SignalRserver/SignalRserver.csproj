@@ -7,7 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Stripe.net" Version="47.2.0-beta.3" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="8.0.0" />
+      <PackageReference Include="Stripe.net" Version="47.0.0" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Shared\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Shared\SurveyPrompt.razor" />
     </ItemGroup>
 
 </Project>

@@ -1,15 +1,21 @@
 @page "/admin/orders"
+@using Microsoft.AspNetCore.SignalR.Client
+@using Blazored.LocalStorage
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
 
 <style>
     body {
-        background-color: #f8f9fa;
+        background-color: #f8f9fa; /* Light gray background */
     }
+
     .sidebar {
-        background-color: #343a40;
+        background-color: #343a40; /* Dark gray background */
         color: #fff;
         min-height: 100vh;
         padding-top: 20px;
     }
+
     .sidebar a {
         color: #ddd;
         text-decoration: none;
@@ -17,16 +23,19 @@
         padding: 10px 20px;
         font-size: 16px;
     }
+
     .sidebar a:hover {
         background-color: #495057;
         color: #fff;
     }
+
     .dashboard-header {
         font-size: 26px;
         margin: 20px 0;
         text-align: center;
         color: #343a40;
     }
+
     .card {
         border: none;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -36,27 +45,14 @@
         font-weight: bold;
         background-color: #fff;
     }
+
     .card h5 {
         margin-bottom: 10px;
         font-size: 22px;
     }
-    .order-item {
-        margin-bottom: 15px;
-    }
-    .order-header {
-        width: 100%;
-        text-align: left;
-        padding: 10px;
-        background-color: #f1f1f1;
-        border: 1px solid #ddd;
-        cursor: pointer;
-    }
-    .order-details {
-        padding: 10px;
-        border-left: 2px solid #007bff;
-        background-color: #fefefe;
-    }
 </style>
+
+<h3 class="text-center my-4">Orders Overview</h3>
 
 <div class="container-fluid">
     <div class="row">
@@ -64,137 +60,163 @@
         <nav class="col-md-2 sidebar">
             <div class="text-center fs-4 py-2 border-bottom">Admin Dashboard</div>
             <a href="/admin/dashboard"><i class="bi bi-cart"></i> Dashboard</a>
-            <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
             <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
-            <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
             <a href="/admin/messages"><i class="bi bi-envelope"></i> Messages</a>
-            <a href="/admin/reviews"><i class="bi bi-star"></i> Reviews</a>
         </nav>
 
         <!-- Main Content -->
         <main class="col-md-10">
-            <div class="dashboard-header">Orders Overview</div>
-            <div class="row g-4 px-4 my-5">
-                <div class="col-md-4">
-                    <div class="card">
-                        <h5>Total Orders</h5>
-                        <p>@totalOrders</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <h5>Orders This Month</h5>
-                        <p>@ordersThisMonth</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <h5>Orders Last Month</h5>
-                        <p>@ordersLastMonth</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Order List -->
-            <div class="order-list">
-                @foreach (var order in orders)
+            @if (!IsLoading)
+            {
+                @if (Orders.Count == 0)
                 {
-                <div class="order-item">
-                    <button class="order-header" @onclick="() => ToggleOrderDetails(order.Id)">
-                        Order ID: @order.Id - Total: @order.TotalPrice.ToString("C") - Status: @order.Status
-                    </button>
-                    @if (expandedOrders.Contains(order.Id))
-                    {
-                    <div class="order-details">
-                        <p><strong>Customer ID:</strong> @order.CustomerId</p>
-                        <p><strong>Address ID:</strong> @order.AddressId</p>
-                        <p><strong>Total Quantity:</strong> @order.TotalQuantity</p>
-                        <p><strong>Created At:</strong> @order.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</p>
-
-                        <h5>Order Items:</h5>
-                        <ul>
-                            @foreach (var item in order.OrderItems)
-                            {
-                            <li>@item.Quantity x @item.Product.Price.ToString("C") - @item.Product.Name</li>
-                            }
-                        </ul>
-                        <button class="btn btn-primary" @onclick="() => UpdateOrderStatus(order.Id, ShippedStatus)">Mark as Shipped</button>
-                        <button class="btn btn-danger" @onclick="() => UpdateOrderStatus(order.Id, CancelledStatus)">Cancel Order</button>
-                    </div>
-                    }
-                </div>
+                    <p class="text-muted text-center">No orders available.</p>
                 }
-            </div>
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Email</th>
+                                    <th>Amount Paid</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Orders)
+                                {
+                                    <tr>
+                                        <td>@order.Id</td>
+                                        <td>@order.Email</td>
+                                        <td>@order.AmountPaid.ToString("N2") kr.</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" @onclick="() => ToggleOrderDetails(order.Id)">
+                                                View Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @if (ExpandedOrders.Contains(order.Id))
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="p-3 border rounded bg-light">
+                                                    <h5>Order Details</h5>
+                                                    <p><strong>Order ID:</strong> @order.Id</p>
+                                                    <p><strong>Customer Name:</strong> @order.CustomerName</p>
+                                                    <p><strong>Email:</strong> @order.Email</p>
+                                                    <p><strong>Address:</strong> @order.Address</p>
+                                                    
+
+                                                    @if (order.Items != null && order.Items.Count > 0)
+                                                    {
+                                                        <p><strong>Products:</strong></p>
+                                                        <ul>
+                                                            @foreach (var item in order.Items)
+                                                            {
+                                                                <li>
+                                                                    @item.Name - @item.Quantity x @item.Price.ToString("N2") kr. = 
+                                                                    <strong>@((item.Quantity * item.Price).ToString("N2")) kr.</strong>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                        <p><strong>Amount Paid:</strong> @order.AmountPaid.ToString("N2") kr.</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>No products available.</p>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading orders...</p>
+                </div>
+            }
         </main>
     </div>
 </div>
 
 @code {
-    private HttpClient http = new HttpClient();
-    private List<Order> orders = new List<Order>();
-    private List<long> expandedOrders = new List<long>();
-    private int totalOrders;
-    private int ordersThisMonth;
-    private int ordersLastMonth;
-    private const string ShippedStatus = "shipped";
-    private const string CancelledStatus = "cancelled";
-    
+    private List<Order> Orders = new List<Order>();
+    private HashSet<string> ExpandedOrders = new HashSet<string>();
+    private bool IsLoading = true; // Indicates loading state
+    private HubConnection? hubConnection;
+
     protected override async Task OnInitializedAsync()
     {
-        http.BaseAddress = new Uri("http://localhost:8080");
-        orders = await http.GetFromJsonAsync<List<Order>>("/orders");
-        totalOrders = orders.Count;
-        ordersThisMonth = orders.Count(o => o.CreatedAt.Month == DateTime.Now.Month);
-        ordersLastMonth = orders.Count(o => o.CreatedAt.Month == DateTime.Now.AddMonths(-1).Month);
+        // Check if the user is logged in
+        var isAdminLoggedIn = await LocalStorage.GetItemAsync<bool>("isAdminLoggedIn");
+        if (!isAdminLoggedIn)
+        {
+            // Redirect to the login page if not authorized
+            NavigationManager.NavigateTo("/admin");
+            return; // Prevent further execution of the page
+        }
+
+        try
+        {
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7237/paymenthub")
+                .WithAutomaticReconnect()
+                .Build();
+
+            hubConnection.On<List<Order>>("ReceivePaymentDetails", (orders) =>
+            {
+                Orders = orders;
+                IsLoading = false; // Data is loaded
+                InvokeAsync(StateHasChanged);
+            });
+
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("FetchStripeData");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading orders: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false; // Ensure loading spinner is hidden
+        }
     }
 
-    private void ToggleOrderDetails(long orderId)
+    private void ToggleOrderDetails(string orderId)
     {
-        if (expandedOrders.Contains(orderId))
-        {
-            expandedOrders.Remove(orderId);
-        }
+        if (ExpandedOrders.Contains(orderId))
+            ExpandedOrders.Remove(orderId);
         else
+            ExpandedOrders.Add(orderId);
+    }
+
+    private class Order
+    {
+        public string Id { get; set; }
+        public string CustomerName { get; set; } // Add the customer's name
+        public string Email { get; set; }
+        public double AmountPaid { get; set; }
+        public string Address { get; set; }
+        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+
+        public class OrderItem
         {
-            expandedOrders.Add(orderId);
+            public string Name { get; set; }
+            public long Quantity { get; set; }
+            public double Price { get; set; }
         }
-    }
-
-    private async Task UpdateOrderStatus(long orderId, string status)
-    {
-        var response = await http.PutAsync($"/orders/update-status/{orderId}?status={status}", null);
-        if (response.IsSuccessStatusCode)
-        {
-            var order = orders.First(o => o.Id == orderId);
-            order.Status = status;
-        }
-        else
-        {
-            Console.WriteLine($"Error updating order status: {response.ReasonPhrase}");
-        }
-    }
-
-    public class Order
-    {
-        public long Id { get; set; }
-        public long CustomerId { get; set; }
-        public long AddressId { get; set; }
-        public string Status { get; set; }
-        public int TotalQuantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-    }
-
-    public class OrderItem
-    {
-        public int Quantity { get; set; }
-        public Product Product { get; set; } = new Product();
-    }
-
-    public class Product
-    {
-        public string Name { get; set; }
-        public decimal Price { get; set; }
     }
 }

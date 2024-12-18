@@ -1,12 +1,11 @@
 ﻿@page "/SpecificProduct/{Id:int}"
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-
+@inject HttpClient Http
 
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-    
     body {
         font-family: 'Lato', sans-serif;
         background-color: #f9f9f9;
@@ -27,7 +26,6 @@
         line-height: 1.6;
     }
 
-    /* Left Section Styling (Product Image) */
     .product-image {
         background-color: #ffffff;
         border: 1px solid #ddd;
@@ -41,7 +39,6 @@
         object-fit: contain;
     }
 
-    /* Right Section Styling (Product Details) */
     .product-details {
         background-color: #ffffff;
         border-radius: 8px;
@@ -64,35 +61,15 @@
         border: none;
     }
 
-    .btn-primary:hover {
+    .btn-primary:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .btn-primary:hover:not(:disabled) {
         background-color: #0056b3;
     }
-
-    .btn-primary.ms-3 {
-        margin-left: 10px;
-    }
-
-    /* Alert Styling */
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border-radius: 8px;
-        padding: 10px;
-    }
-
-    /* Layout Adjustments */
-    .container-fluid {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-
-        .product-image,
-        .product-details {
-            margin-bottom: 20px;
-        }
 </style>
-
 
 <div class="row container-fluid my-5">
     <!-- Left Section (Product Image) -->
@@ -114,10 +91,15 @@
             <h3>@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("da-DK"))</h3>
         </div>
 
+        <!-- Stock Availability -->
+        <div class="my-3">
+            <p><strong>Stock Available:</strong> @product.StockQuantity</p>
+        </div>
+
         <!-- Add to Cart and Return Buttons -->
         <div class="my-3 d-flex align-items-center">
-            <button class="btn btn-primary" @onclick="AddToCart">
-                Add to Cart
+            <button class="btn btn-primary" @onclick="AddToCart" disabled="@IsOutOfStock">
+                @AddToCartButtonText
             </button>
             <button class="btn btn-primary ms-3" @onclick="ReturnToProductPage">
                 Return
@@ -144,6 +126,8 @@
     private Product product = new();
     private List<CartItem> cartItems = new();
     private bool isProductAdded = false;
+    private bool IsOutOfStock => product.StockQuantity == 0;
+    private string AddToCartButtonText => IsOutOfStock ? "Out of Stock" : "Add to Cart";
 
     protected override async Task OnInitializedAsync()
     {
@@ -172,6 +156,9 @@
 
     private async Task AddToCart()
     {
+        if (IsOutOfStock)
+            return;
+
         var existingItem = cartItems.FirstOrDefault(item => item.Id == product.Id);
         if (existingItem != null)
         {
@@ -206,6 +193,7 @@
         public string Name { get; set; }
         public string Image { get; set; }
         public double Price { get; set; }
+        public int StockQuantity { get; set; } // Added StockQuantity
         public string Description { get; set; }
     }
 

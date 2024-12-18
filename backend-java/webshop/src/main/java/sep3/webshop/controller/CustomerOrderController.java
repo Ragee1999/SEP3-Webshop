@@ -1,10 +1,9 @@
-package sep3.webshop.controller;
+/* package sep3.webshop.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sep3.webshop.model.CustomerOrder;
 import sep3.webshop.service.CustomerOrderService;
-import sep3.webshop.service.OrderItemService;
 import java.util.List;
 
 @RestController
@@ -12,11 +11,9 @@ import java.util.List;
 public class CustomerOrderController {
 
     private final CustomerOrderService customerOrderService;
-    private final OrderItemService orderItemService;
 
-    public CustomerOrderController(CustomerOrderService customerOrderService, OrderItemService orderItemService) {
+    public CustomerOrderController(CustomerOrderService customerOrderService) {
         this.customerOrderService = customerOrderService;
-        this.orderItemService = orderItemService;
     }
 
     @PostMapping("/add")
@@ -59,4 +56,4 @@ public class CustomerOrderController {
         customerOrderService.updateOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
     }
-}
+} */

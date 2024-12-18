@@ -1,4 +1,4 @@
-package sep3.webshop.repository;
+/* package sep3.webshop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +23,4 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
     List<CustomerOrder> findByStatus(String status);
     long countByStatus(String status);
 
-}
+} */
