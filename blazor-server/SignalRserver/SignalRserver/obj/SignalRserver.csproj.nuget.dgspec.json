@@ -42,6 +42,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[47.0.0, )"
@@ -49,6 +53,10 @@
             "System.Diagnostics.DiagnosticSource": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.2, )"
             }
           },
           "imports": [
