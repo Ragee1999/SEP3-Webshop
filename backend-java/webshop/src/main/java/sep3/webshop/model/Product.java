@@ -75,4 +75,14 @@ public class Product {
         this.description = description;
     }
 
+    public Product(Long id, String name, String image, Double price, Integer stockQuantity, String description) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.description = description;
+    }
+
+    public Product() {}
 }
